@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primary Transformers — Critical Power Equipment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#2000D3',
+            'brand-dark': '#1600a8',
+            'brand-deep': '#080A98',
+            dark: '#0a0a0f',
+            'dark-2': '#111118',
+            'dark-3': '#16161f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'Arial', 'sans-serif'],
+          },
+          letterSpacing: {
+            tightest: '-0.03em',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Marquee ── */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* ── Nav dropdown ── */
+    .nav-item:hover .nav-dropdown { display: block; }
+
+    /* ── Progress line ── */
+    @keyframes progress {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+    .progress-active { animation: progress 3s linear forwards; }
+
+    /* ── Card morph shapes ── */
+    .morph-shape { transition: d 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+
+    /* ── Fade up on scroll ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Text gradient ── */
+    .text-gradient {
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.55) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Blue gradient bg ── */
+    .hero-bg-orb {
+      position: absolute;
+      width: 720px; height: 720px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(32,0,211,0.18) 0%, rgba(137,207,242,0.08) 50%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Swiper dots ── */
+    .swiper-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background 0.3s; }
+    .swiper-dot.active { background: #fff; width: 24px; border-radius: 4px; }
+
+    /* ── Market tab progress ── */
+    .tab-progress { height: 2px; background: rgba(255,255,255,0.15); overflow: hidden; }
+    .tab-progress-bar { height: 100%; background: #fff; width: 0%; }
+
+    /* ── Hover card ── */
+    .product-card { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+    .product-card:hover { box-shadow: 0 8px 40px rgba(32,0,211,0.18); transform: translateY(-3px); }
+
+    /* ── Custom scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #2000D3; border-radius: 3px; }
+
+    /* ── Footer CTA clip ── */
+    .cta-clip { clip-path: polygon(0 8%, 100% 0%, 100% 92%, 0% 100%); }
+
+    /* ── Testimonial card ── */
+    .testimonial-card { flex: 0 0 calc(50% - 12px); }
+    @media (max-width: 768px) { .testimonial-card { flex: 0 0 calc(100% - 0px); } }
+
+    /* ── Noise grain texture ── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+  </style>
+</head>
+<body class="bg-white text-dark font-sans antialiased">
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="padding: 0 clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto flex items-center justify-between h-16 md:h-20">
+
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2.5 shrink-0">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <rect width="30" height="30" rx="5" fill="#2000D3"/>
+        <path d="M6 15h4.5l2-7 4 14 2-9 2 4.5H24" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span id="nav-logo-text" class="font-bold text-[15px] text-white tracking-tight transition-colors duration-300">Primary Transformers</span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li class="nav-item relative group">
+        <button class="nav-link flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors">
+          Products
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown hidden absolute top-full left-0 pt-3">
+          <div class="bg-white rounded-xl shadow-2xl shadow-black/10 border border-gray-100 p-2 min-w-[260px]">
+            <a href="#" class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 group/item">
+              <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center mt-0.5 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/></svg>
+              </div>
+              <div><p class="text-sm font-semibold text-gray-900">Power Transformers</p><p class="text-xs text-gray-500 mt-0.5">High-capacity for generation & transmission</p></div>
+            </a>
+            <a href="#" class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50">
+              <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center mt-0.5 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <div><p class="text-sm font-semibold text-gray-900">Distribution Transformers</p><p class="text-xs text-gray-500 mt-0.5">12–16 week delivery, oil-filled or dry-type</p></div>
+            </a>
+            <a href="#" class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50">
+              <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center mt-0.5 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div><p class="text-sm font-semibold text-gray-900">Special Purpose</p><p class="text-xs text-gray-500 mt-0.5">Custom solutions for harsh environments</p></div>
+            </a>
+            <a href="#" class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50">
+              <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center mt-0.5 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div><p class="text-sm font-semibold text-gray-900">HV Circuit Breakers</p><p class="text-xs text-gray-500 mt-0.5">Protection for transmission networks</p></div>
+            </a>
+            <a href="#" class="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50">
+              <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center mt-0.5 shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </div>
+              <div><p class="text-sm font-semibold text-gray-900">MV Switchgear</p><p class="text-xs text-gray-500 mt-0.5">Control & protection for distribution</p></div>
+            </a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item relative group">
+        <button class="nav-link flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors">
+          Markets
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown hidden absolute top-full left-0 pt-3">
+          <div class="bg-white rounded-xl shadow-2xl shadow-black/10 border border-gray-100 p-2 min-w-[180px]">
+            <a href="#" class="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Renewable Energy</a>
+            <a href="#" class="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Data Centers</a>
+            <a href="#" class="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Industrial</a>
+            <a href="#" class="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Utilities</a>
+            <a href="#" class="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg">Oil &amp; Gas</a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">The Primary Experience</a></li>
+      <li><a href="#" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">Services</a></li>
+      <li><a href="#" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">About Us</a></li>
+      <li><a href="#" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">Resources</a></li>
+    </ul>
+
+    <div class="hidden lg:flex items-center gap-3">
+      <a href="#contact" id="nav-cta" class="px-5 py-2.5 bg-brand text-white text-sm font-semibold rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200">
+        Contact Us
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="lg:hidden flex flex-col gap-[5px] p-1" aria-label="Menu">
+      <span class="w-6 h-[2px] bg-white rounded transition-all"></span>
+      <span class="w-6 h-[2px] bg-white rounded transition-all"></span>
+      <span class="w-6 h-[2px] bg-white rounded transition-all"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-dark flex-col pt-24 px-6 gap-4 hidden">
+  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Products</a>
+  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Markets</a>
+  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">The Primary Experience</a>
+  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Services</a>
+  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">About Us</a>
+  <a href="#contact" class="mt-4 w-full text-center py-3 bg-brand text-white font-semibold rounded-lg">Contact Us</a>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="relative min-h-screen bg-dark grain overflow-hidden flex flex-col justify-between" style="padding: 0 clamp(1rem,4vw,3rem);">
+  <!-- Background image -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://placehold.co/1600x900/0a0a14/1a1a2e?text=" alt="" class="w-full h-full object-cover opacity-40" style="object-position: center 40%;" />
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,15,0.5) 0%, rgba(10,10,15,0.3) 40%, rgba(10,10,15,0.85) 100%);"></div>
+  </div>
+
+  <!-- Blue orb -->
+  <div class="hero-bg-orb" style="top: -180px; right: 5%; z-index: 1;"></div>
+  <div class="absolute z-1" style="bottom: -200px; left: -100px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(8,10,152,0.22) 0%, transparent 70%); pointer-events:none;"></div>
+
+  <!-- Hero content -->
+  <div class="relative z-10 max-w-screen-xl mx-auto w-full flex flex-col justify-center" style="padding-top: clamp(6rem,12vw,10rem); padding-bottom: clamp(4rem,7vw,6rem); min-height: 100svh;">
+    <div class="max-w-2xl">
+      <p class="reveal text-xs font-semibold tracking-[0.14em] uppercase text-white/50 mb-5">Critical Power Infrastructure</p>
+      <h1 class="reveal text-[clamp(2.6rem,5.5vw,4.8rem)] font-extrabold text-white leading-[1.08] tracking-tightest mb-6" style="animation-delay:0.1s">
+        Putting You Back<br>in Control of Your<br>Power Projects
+      </h1>
+      <p class="reveal text-[clamp(1rem,1.4vw,1.1rem)] text-white/60 max-w-lg leading-[1.75] mb-10" style="animation-delay:0.2s">
+        At Primary, we work with you as true partners to design and procure critical power grid equipment — delivered on a schedule you control.
+      </p>
+      <div class="reveal flex flex-wrap gap-3" style="animation-delay:0.3s">
+        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3.5 bg-brand text-white font-semibold text-sm rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200 shadow-lg shadow-brand/30">
+          Talk to Our Experts
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#products" class="inline-flex items-center gap-2 px-6 py-3.5 border border-white/20 text-white font-semibold text-sm rounded-lg hover:bg-white/8 hover:border-white/40 active:scale-95 transition-all duration-200">
+          View Products
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     LOGO MARQUEE
+══════════════════════════════════════ -->
+<div class="bg-white border-y border-gray-100 py-5 overflow-hidden" style="padding-left: 0; padding-right: 0;">
+  <div class="marquee-track">
+    <!-- Set 1 -->
+    <div class="flex items-center gap-16 px-8">
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Linea Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Birch Creek</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Nofar Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">PureSky Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">GridPath Solutions</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Apex Power</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Vantage Infrastructure</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+    </div>
+    <!-- Set 2 (duplicate for seamless loop) -->
+    <div class="flex items-center gap-16 px-8">
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Linea Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Birch Creek</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Nofar Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">PureSky Energy</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">GridPath Solutions</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Apex Power</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+      <span class="text-sm font-bold text-gray-300 tracking-wider uppercase whitespace-nowrap">Vantage Infrastructure</span>
+      <span class="w-px h-4 bg-gray-200"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     THE PRIMARY DIFFERENCE
+══════════════════════════════════════ -->
+<section class="bg-dark-2 relative grain overflow-hidden" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <!-- bg glow -->
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(32,0,211,0.12) 0%, transparent 70%);"></div>
+
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: heading + nav -->
+      <div class="reveal">
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Why Primary Transformers</p>
+        <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-white leading-[1.1] tracking-tightest mb-10">
+          The Primary<br>Difference
+        </h2>
+
+        <!-- Card nav buttons -->
+        <div id="diff-nav" class="flex flex-col gap-3">
+          <button data-card="0" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-brand bg-brand/10">
+            <span class="w-10 h-10 rounded-lg bg-brand flex items-center justify-center shrink-0 transition-colors">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-white">Ownership Experience</p>
+              <p class="text-xs text-white/50 mt-0.5">Streamlined from engineering to power-on</p>
+            </div>
+          </button>
+          <button data-card="1" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
+            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">Experienced Hands</p>
+              <p class="text-xs text-white/35 mt-0.5">Direct access to industry veterans</p>
+            </div>
+          </button>
+          <button data-card="2" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
+            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">Designed for Certainty</p>
+              <p class="text-xs text-white/35 mt-0.5">Modern supply chain, manufacturing control</p>
+            </div>
+          </button>
+          <button data-card="3" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
+            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </span>
+            <div>
+              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">Dependable Field Support</p>
+              <p class="text-xs text-white/35 mt-0.5">24/7 lifecycle support, NETA-accredited</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: card content -->
+      <div class="reveal" style="animation-delay:0.15s">
+        <div id="diff-cards" class="relative min-h-[340px]">
+          <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500" style="background: rgba(255,255,255,0.04);">
+            <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Ownership Experience</h3>
+            <p class="text-white/55 leading-[1.75] text-sm">We've reimagined equipment ownership — streamlining every step from engineering consultation and manufacturing oversight to delivery logistics, installation, and power-on. You stay in control at every stage, with full visibility into your project timeline.</p>
+          </div>
+          <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
+            <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Experienced Hands</h3>
+            <p class="text-white/55 leading-[1.75] text-sm">Get direct access to industry veterans as your engineering partners. Our team brings decades of hands-on transformer expertise, meaning you're not navigating procurement alone — you have a seasoned guide at every decision point.</p>
+          </div>
+          <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
+            <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Designed for Certainty</h3>
+            <p class="text-white/55 leading-[1.75] text-sm">Our modern supply chain and manufacturing oversight model means fewer surprises, shorter lead times, and guaranteed specs. We plan for contingencies so your project schedule stays intact, even when the industry faces headwinds.</p>
+          </div>
+          <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
+            <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">Dependable Field Support</h3>
+            <p class="text-white/55 leading-[1.75] text-sm">24/7 lifecycle support through NETA-accredited field partners. From commissioning to emergency response, our on-ground service teams are always reachable and ready to act — because your uptime is our priority.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     PRODUCTS
+══════════════════════════════════════ -->
+<section id="products" class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal">
+      <div>
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-3">Our Products</p>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark leading-[1.1] tracking-tightest">Quality Power Equipment,<br>On Your Terms</h2>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200 shrink-0">
+        View all products
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- Product carousel -->
+    <div class="relative">
+      <div id="product-slider" class="overflow-hidden">
+        <div id="product-track" class="flex gap-5 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+
+          <!-- Card 1 -->
+          <div class="product-card shrink-0 w-[calc(33.333%-14px)] min-w-[280px] rounded-2xl overflow-hidden border border-gray-100 bg-white cursor-pointer">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://placehold.co/600x400/0a0a14/1a1a2e" alt="Power Transformers" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <span class="absolute top-4 left-4 text-xs font-bold text-white/40 tracking-widest">01</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-dark mb-2">Power Transformers</h3>
+              <p class="text-sm text-gray-500 leading-relaxed mb-4">High-capacity units for generation, transmission, and substation applications. Built to IEEE and IEC standards.</p>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
+                Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="product-card shrink-0 w-[calc(33.333%-14px)] min-w-[280px] rounded-2xl overflow-hidden border border-gray-100 bg-white cursor-pointer">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://placehold.co/600x400/0d0d1a/1a1a30" alt="Distribution Transformers" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <span class="absolute top-4 left-4 text-xs font-bold text-white/40 tracking-widest">02</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-dark mb-2">Distribution Transformers</h3>
+              <p class="text-sm text-gray-500 leading-relaxed mb-4">Oil-filled and dry-type units available with industry-leading 12–16 week delivery timelines.</p>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
+                Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="product-card shrink-0 w-[calc(33.333%-14px)] min-w-[280px] rounded-2xl overflow-hidden border border-gray-100 bg-white cursor-pointer">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://placehold.co/600x400/10101f/1e1e35" alt="Special Purpose Transformers" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <span class="absolute top-4 left-4 text-xs font-bold text-white/40 tracking-widest">03</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-dark mb-2">Special Purpose Transformers</h3>
+              <p class="text-sm text-gray-500 leading-relaxed mb-4">Custom-engineered solutions for harsh environments, mining operations, and offshore platforms.</p>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
+                Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="product-card shrink-0 w-[calc(33.333%-14px)] min-w-[280px] rounded-2xl overflow-hidden border border-gray-100 bg-white cursor-pointer">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://placehold.co/600x400/121225/20203a" alt="HV Circuit Breakers" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <span class="absolute top-4 left-4 text-xs font-bold text-white/40 tracking-widest">04</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-dark mb-2">High-Voltage Circuit Breakers</h3>
+              <p class="text-sm text-gray-500 leading-relaxed mb-4">Protection equipment for high-voltage transmission networks and critical grid interconnection.</p>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
+                Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="product-card shrink-0 w-[calc(33.333%-14px)] min-w-[280px] rounded-2xl overflow-hidden border border-gray-100 bg-white cursor-pointer">
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://placehold.co/600x400/14142a/22223f" alt="MV Switchgear" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <span class="absolute top-4 left-4 text-xs font-bold text-white/40 tracking-widest">05</span>
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-dark mb-2">Medium Voltage Switchgear</h3>
+              <p class="text-sm text-gray-500 leading-relaxed mb-4">Control and protection systems for distribution networks. Configurable for any site topology.</p>
+              <a href="#" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:gap-3 transition-all duration-200">
+                Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Slider controls -->
+      <div class="flex items-center justify-between mt-8">
+        <div class="flex items-center gap-2">
+          <span id="prod-current" class="text-3xl font-extrabold text-dark tracking-tightest">01</span>
+          <span class="text-gray-200 text-2xl font-light">/</span>
+          <span class="text-lg font-semibold text-gray-300">05</span>
+        </div>
+        <div class="flex gap-2">
+          <button id="prod-prev" class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:bg-brand hover:border-brand hover:text-white active:scale-95 transition-all duration-200 text-gray-400 disabled:opacity-30" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button id="prod-next" class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center hover:bg-brand hover:border-brand hover:text-white active:scale-95 transition-all duration-200 text-gray-400">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CERTAINTY STATS
+══════════════════════════════════════ -->
+<section class="bg-dark relative grain overflow-hidden" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(32,0,211,0.14) 0%, transparent 70%);"></div>
+  <div class="max-w-screen-xl mx-auto">
+    <div class="reveal text-center mb-16">
+      <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Our Track Record</p>
+      <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-white leading-[1.1] tracking-tightest">This Is What<br>Certainty Looks Like</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-px bg-white/8 rounded-2xl overflow-hidden">
+      <div class="reveal bg-dark p-10 md:p-12 flex flex-col gap-3 hover:bg-dark-3 transition-colors duration-300">
+        <p class="text-[clamp(3rem,6vw,5rem)] font-extrabold text-white leading-none tracking-tightest">250<span class="text-brand">+</span></p>
+        <p class="text-base font-semibold text-white">Years of Engineering Experience</p>
+        <p class="text-sm text-white/45 leading-relaxed">Combined expertise across power, transmission, and grid engineering spanning five continents.</p>
+      </div>
+      <div class="reveal bg-dark p-10 md:p-12 flex flex-col gap-3 hover:bg-dark-3 transition-colors duration-300" style="animation-delay:0.1s">
+        <p class="text-[clamp(3rem,6vw,5rem)] font-extrabold text-white leading-none tracking-tightest">12<span class="text-brand">+ GW</span></p>
+        <p class="text-base font-semibold text-white">Project Capacity Underway</p>
+        <p class="text-sm text-white/45 leading-relaxed">Active projects across renewables, data centers, utilities, and industrial clients across North America.</p>
+      </div>
+      <div class="reveal bg-dark p-10 md:p-12 flex flex-col gap-3 hover:bg-dark-3 transition-colors duration-300" style="animation-delay:0.2s">
+        <p class="text-[clamp(3rem,6vw,5rem)] font-extrabold text-white leading-none tracking-tightest">1.5<span class="text-brand">×</span></p>
+        <p class="text-base font-semibold text-white">Faster Delivery</p>
+        <p class="text-sm text-white/45 leading-relaxed">40–72 week lead times versus the 120-week industry standard. Your schedule is our commitment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SUPPORT / LONG HAUL
+══════════════════════════════════════ -->
+<section class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="reveal order-2 lg:order-1">
+        <div class="relative rounded-2xl overflow-hidden" style="height: clamp(300px,45vw,540px);">
+          <img src="https://placehold.co/800x600/0a0a14/1a1a2e" alt="Field service team" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-tr from-black/50 to-transparent mix-blend-multiply"></div>
+          <!-- Floating badge -->
+          <div class="absolute bottom-6 left-6 right-6 rounded-xl p-4 backdrop-blur-sm border border-white/15" style="background: rgba(10,10,15,0.75);">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-brand flex items-center justify-center shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-white">24/7 Emergency Response</p>
+                <p class="text-xs text-white/50">NETA-accredited field teams, 48h average response</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal order-1 lg:order-2" style="animation-delay:0.15s">
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Lifecycle Services</p>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark leading-[1.1] tracking-tightest mb-6">Your Partner<br>For The Long Haul</h2>
+        <p class="text-gray-500 leading-[1.75] mb-6">Commissioning, maintenance, and emergency response are handled through our network of on-ground service teams and NETA-accredited partners — so your infrastructure keeps running long after delivery.</p>
+        <p class="text-gray-500 leading-[1.75] mb-8">From preventive maintenance programs to 24-hour emergency response and full transformer repair and refurbishment, we're invested in your uptime for the life of every asset we supply.</p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3.5 bg-brand text-white font-semibold text-sm rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200 shadow-lg shadow-brand/20">
+            Talk to an Expert
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#" class="inline-flex items-center gap-2 px-6 py-3.5 border border-gray-200 text-dark font-semibold text-sm rounded-lg hover:bg-gray-50 active:scale-95 transition-all duration-200">
+            View Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     STANDARDS / CERTIFICATIONS
+══════════════════════════════════════ -->
+<section class="bg-gray-50 border-y border-gray-100" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="reveal">
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Quality &amp; Compliance</p>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark leading-[1.1] tracking-tightest mb-6">Built to the<br>Highest Standards</h2>
+        <p class="text-gray-500 leading-[1.75] mb-8">Every transformer and switchgear product is manufactured in ISO-certified facilities, tested in NABL-certified labs, and designed to exceed IEEE, ANSI, and IEC compliance requirements.</p>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">ISO-Certified Facilities</p><p class="text-xs text-gray-400 mt-0.5">Manufacturing quality management</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">NABL-Certified Testing</p><p class="text-xs text-gray-400 mt-0.5">Accredited laboratory validation</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">IEEE / ANSI / IEC</p><p class="text-xs text-gray-400 mt-0.5">Full international standards compliance</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">60+ GVA Capacity</p><p class="text-xs text-gray-400 mt-0.5">Industry-leading manufacturing scale</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">50% Faster Delivery</p><p class="text-xs text-gray-400 mt-0.5">vs. industry-standard lead times</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <div><p class="text-sm font-semibold text-dark">24–48h Response</p><p class="text-xs text-gray-400 mt-0.5">NETA-accredited service partners</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal grid grid-cols-3 gap-4" style="animation-delay:0.15s">
+        <!-- Cert badge tiles -->
+        <div class="aspect-square rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm shadow-black/4 hover:shadow-md transition-shadow">
+          <span class="text-2xl font-extrabold text-dark tracking-tight">ISO</span>
+          <span class="text-xs text-gray-400 font-medium">9001</span>
+        </div>
+        <div class="aspect-square rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm shadow-black/4 hover:shadow-md transition-shadow">
+          <span class="text-2xl font-extrabold text-dark tracking-tight">ISO</span>
+          <span class="text-xs text-gray-400 font-medium">14001</span>
+        </div>
+        <div class="aspect-square rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm shadow-black/4 hover:shadow-md transition-shadow">
+          <span class="text-2xl font-extrabold text-dark tracking-tight">UL</span>
+          <span class="text-xs text-gray-400 font-medium">Listed</span>
+        </div>
+        <div class="aspect-square rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm shadow-black/4 hover:shadow-md transition-shadow">
+          <span class="text-2xl font-extrabold text-dark tracking-tight">IEC</span>
+          <span class="text-xs text-gray-400 font-medium">60076</span>
+        </div>
+        <div class="aspect-square rounded-2xl bg-brand flex flex-col items-center justify-center gap-2 shadow-lg shadow-brand/25">
+          <span class="text-2xl font-extrabold text-white tracking-tight">IEEE</span>
+          <span class="text-xs text-white/60 font-medium">C57</span>
+        </div>
+        <div class="aspect-square rounded-2xl bg-white border border-gray-100 flex flex-col items-center justify-center gap-2 shadow-sm shadow-black/4 hover:shadow-md transition-shadow">
+          <span class="text-xl font-extrabold text-dark tracking-tight">ANSI</span>
+          <span class="text-xs text-gray-400 font-medium">Certified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════ -->
+<section class="bg-dark-2 relative grain overflow-hidden" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 40% 40% at 20% 60%, rgba(32,0,211,0.1) 0%, transparent 70%);"></div>
+  <div class="max-w-screen-xl mx-auto">
+    <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Client Reviews</p>
+        <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-white leading-[1.1] tracking-tightest">The Result of a<br>Real Partnership</h2>
+      </div>
+      <div class="flex gap-2">
+        <button id="test-prev" class="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:bg-white/8 hover:border-white/30 active:scale-95 transition-all duration-200 text-white/50">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="test-next" class="w-11 h-11 rounded-full border border-white/15 flex items-center justify-center hover:bg-white/8 hover:border-white/30 active:scale-95 transition-all duration-200 text-white/50">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-hidden">
+      <div id="test-track" class="flex gap-6 transition-transform duration-500">
+        <!-- T1 -->
+        <div class="testimonial-card shrink-0 rounded-2xl p-7 border border-white/8 flex flex-col gap-6" style="background: rgba(255,255,255,0.04);">
+          <div class="flex gap-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="text-white/65 leading-[1.75] text-sm flex-1">"Primary has been tremendous to work with. Through a moment of legislative uncertainty, they stayed committed to our project timeline and helped us navigate the complexity without missing a beat. They are a true partner."</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/8">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">DS</div>
+            <div><p class="text-sm font-semibold text-white">Dan Siegel</p><p class="text-xs text-white/40">CEO, Birch Creek Energy</p></div>
+          </div>
+        </div>
+        <!-- T2 -->
+        <div class="testimonial-card shrink-0 rounded-2xl p-7 border border-white/8 flex flex-col gap-6" style="background: rgba(255,255,255,0.04);">
+          <div class="flex gap-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="text-white/65 leading-[1.75] text-sm flex-1">"In an industry where delays are the norm, Primary dives in deep to solve problems. Their team helped us compress a 90-week procurement cycle down to 38 weeks. The level of coordination they provided was unlike anything I've seen."</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/8">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">CD</div>
+            <div><p class="text-sm font-semibold text-white">Cassidy DeLine</p><p class="text-xs text-white/40">CEO, PureSky Energy</p></div>
+          </div>
+        </div>
+        <!-- T3 -->
+        <div class="testimonial-card shrink-0 rounded-2xl p-7 border border-white/8 flex flex-col gap-6" style="background: rgba(255,255,255,0.04);">
+          <div class="flex gap-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2000D3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="text-white/65 leading-[1.75] text-sm flex-1">"Primary provided us with excellent service and swift production start for our energy storage project. Their engineering team understood our unique grid requirements and delivered a fully compliant solution ahead of schedule."</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/8">
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-bold text-white">MA</div>
+            <div><p class="text-sm font-semibold text-white">Maayan As</p><p class="text-xs text-white/40">Director, Energy Storage — Nofar Energy</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="flex gap-2 mt-8" id="test-dots">
+      <div class="swiper-dot active"></div>
+      <div class="swiper-dot"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     MARKETS — TABS
+══════════════════════════════════════ -->
+<section class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="reveal text-center mb-12">
+      <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Industries</p>
+      <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-dark leading-[1.1] tracking-tightest">Powering the Most<br>Demanding Sectors</h2>
+    </div>
+
+    <div class="reveal grid lg:grid-cols-[280px_1fr] gap-8 items-start" style="animation-delay:0.15s">
+      <!-- Tab list -->
+      <div id="market-tabs" class="flex lg:flex-col gap-2">
+        <button data-tab="0" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-brand bg-brand/6 w-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2" class="shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-dark">Renewables</p>
+            <div class="tab-progress mt-1.5 rounded-full overflow-hidden">
+              <div class="tab-progress-bar rounded-full" style="background:#2000D3;"></div>
+            </div>
+          </div>
+        </button>
+        <button data-tab="1" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Data Centers</p>
+        </button>
+        <button data-tab="2" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Utilities</p>
+        </button>
+        <button data-tab="3" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Oil &amp; Gas</p>
+        </button>
+        <button data-tab="4" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><path d="M2 20h20M6 20V10l6-6 6 6v10M10 20v-5h4v5"/></svg>
+          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Industrial</p>
+        </button>
+      </div>
+
+      <!-- Tab content panel -->
+      <div class="relative rounded-2xl overflow-hidden" style="height: clamp(300px, 45vw, 520px);">
+        <div id="market-panels" class="w-full h-full">
+          <div class="market-panel absolute inset-0 transition-opacity duration-500 opacity-100">
+            <img src="https://placehold.co/900x600/0a1020/0d1830" alt="Renewables" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+              <h3 class="text-2xl font-extrabold text-white mb-2 tracking-tightest">Renewables</h3>
+              <p class="text-white/60 text-sm leading-relaxed max-w-lg">Grid-ready transformers engineered for solar, wind, and battery storage interconnection. Fast delivery schedules designed around project CODs.</p>
+            </div>
+          </div>
+          <div class="market-panel absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+            <img src="https://placehold.co/900x600/0a0f20/0d1530" alt="Data Centers" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+              <h3 class="text-2xl font-extrabold text-white mb-2 tracking-tightest">Data Centers</h3>
+              <p class="text-white/60 text-sm leading-relaxed max-w-lg">High-reliability transformers for mission-critical facilities demanding 99.999% uptime. Low-loss designs optimized for continuous heavy-load operation.</p>
+            </div>
+          </div>
+          <div class="market-panel absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+            <img src="https://placehold.co/900x600/0f0a20/1a0d30" alt="Utilities" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+              <h3 class="text-2xl font-extrabold text-white mb-2 tracking-tightest">Utilities</h3>
+              <p class="text-white/60 text-sm leading-relaxed max-w-lg">Transmission and distribution solutions for investor-owned, cooperative, and municipal utilities. Built for grid reliability and regulatory compliance.</p>
+            </div>
+          </div>
+          <div class="market-panel absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+            <img src="https://placehold.co/900x600/1a0a0a/2a1010" alt="Oil and Gas" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+              <h3 class="text-2xl font-extrabold text-white mb-2 tracking-tightest">Oil &amp; Gas</h3>
+              <p class="text-white/60 text-sm leading-relaxed max-w-lg">Explosion-proof and NEMA-rated transformers for upstream, midstream, and downstream operations — including remote and offshore environments.</p>
+            </div>
+          </div>
+          <div class="market-panel absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+            <img src="https://placehold.co/900x600/0a150a/0d2010" alt="Industrial" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8">
+              <h3 class="text-2xl font-extrabold text-white mb-2 tracking-tightest">Industrial</h3>
+              <p class="text-white/60 text-sm leading-relaxed max-w-lg">Heavy industry, mining, and manufacturing power solutions. Transformers built to handle high harmonics, thermal stress, and demanding duty cycles.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Arrow nav overlay -->
+        <button id="market-prev" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-colors backdrop-blur-sm z-10">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="market-next" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-colors backdrop-blur-sm z-10">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER CTA
+══════════════════════════════════════ -->
+<section class="relative overflow-hidden" style="background: linear-gradient(135deg, #080A98 0%, #2000D3 50%, #4400ff 100%); padding: clamp(5.5rem,10vw,10rem) clamp(1rem,4vw,3rem);">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(255,255,255,0.07) 0%, transparent 60%);"></div>
+  <!-- Grain -->
+  <div class="absolute inset-0 opacity-[0.04] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=&quot;0 0 256 256&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.9&quot; numOctaves=&quot;4&quot; stitchTiles=&quot;stitch&quot;/%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot;/%3E%3C/svg%3E'); background-size: 200px;"></div>
+
+  <div class="max-w-screen-xl mx-auto text-center relative z-10">
+    <p class="text-xs font-semibold tracking-[0.14em] uppercase text-white/50 mb-6">Ready to get started?</p>
+    <h2 class="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold text-white leading-[1.05] tracking-tightest mb-4 max-w-4xl mx-auto">
+      ...that puts you in command of your power infrastructure
+    </h2>
+    <p class="text-white/55 text-lg max-w-xl mx-auto mb-10 leading-[1.7]">Work with Primary Transformers and take control of your project timeline, specifications, and lifecycle support.</p>
+    <a href="#contact" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand font-bold text-sm rounded-lg hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-2xl shadow-black/20">
+      Get in Touch
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CONTACT
+══════════════════════════════════════ -->
+<section id="contact" class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <div class="reveal">
+        <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Get in Touch</p>
+        <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark leading-[1.1] tracking-tightest mb-6">Let's Discuss<br>Your Project</h2>
+        <p class="text-gray-500 leading-[1.75] mb-8">Tell us about your transformer requirements and a member of our team will respond within one business day.</p>
+        <div class="flex flex-col gap-5">
+          <a href="mailto:contact@primarytransformers.com" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 group-hover:bg-brand group-hover:text-white transition-all duration-200">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2" class="group-hover:stroke-white transition-colors"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <span class="text-sm font-medium text-dark group-hover:text-brand transition-colors">contact@primarytransformers.com</span>
+          </a>
+          <a href="tel:+18005550199" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-lg bg-brand/8 flex items-center justify-center shrink-0 group-hover:bg-brand transition-all duration-200">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="2" class="group-hover:stroke-white transition-colors"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <span class="text-sm font-medium text-dark group-hover:text-brand transition-colors">+1 (800) 555-0199</span>
+          </a>
+        </div>
+      </div>
+
+      <form id="contact-form" class="reveal flex flex-col gap-5" style="animation-delay:0.15s">
+        <div class="grid grid-cols-2 gap-5">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-semibold text-dark tracking-wide">First Name</label>
+            <input type="text" placeholder="Jane" class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-semibold text-dark tracking-wide">Last Name</label>
+            <input type="text" placeholder="Smith" class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all" />
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-dark tracking-wide">Company</label>
+          <input type="text" placeholder="Acme Energy Corp" class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-dark tracking-wide">Email Address</label>
+          <input type="email" placeholder="jane@acmeenergy.com" class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-dark tracking-wide">Industry</label>
+          <select class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23888%22%20stroke-width%3D%222%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center] pr-10 text-gray-500">
+            <option value="" disabled selected>Select your industry</option>
+            <option>Renewables</option>
+            <option>Data Centers</option>
+            <option>Utilities</option>
+            <option>Oil &amp; Gas</option>
+            <option>Industrial</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-dark tracking-wide">Project Details</label>
+          <textarea rows="4" placeholder="Describe your transformer requirements, voltage, MVA rating, timeline..." class="px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 transition-all resize-none"></textarea>
+        </div>
+        <button type="submit" id="submit-btn" class="w-full py-3.5 bg-brand text-white font-semibold text-sm rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200 shadow-lg shadow-brand/20">
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="bg-[#060608]" style="padding: clamp(3rem,5vw,5rem) clamp(1rem,4vw,3rem) 1.5rem;">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 pb-12 border-b border-white/6">
+      <div class="col-span-2 md:col-span-1">
+        <a href="/" class="flex items-center gap-2.5 mb-4">
+          <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
+            <rect width="30" height="30" rx="5" fill="#2000D3"/>
+            <path d="M6 15h4.5l2-7 4 14 2-9 2 4.5H24" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-sm font-bold text-white tracking-tight">Primary Transformers</span>
+        </a>
+        <p class="text-xs text-white/30 leading-relaxed max-w-[22ch]">Critical power infrastructure solutions for a connected world.</p>
+        <p class="text-xs text-white/30 mt-4">contact@primarytransformers.com</p>
+      </div>
+      <div>
+        <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Products</p>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Power Transformers</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Distribution Transformers</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Special Purpose</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">HV Circuit Breakers</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">MV Switchgear</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Markets</p>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Renewable Energy</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Data Centers</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Industrial</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Utilities</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Oil &amp; Gas</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Services</p>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Field Support</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Repair &amp; Refurb</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Commissioning</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Company</p>
+        <ul class="flex flex-col gap-2.5">
+          <li><a href="#contact" class="text-xs text-white/45 hover:text-white transition-colors">Contact Us</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">The Primary Experience</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">About Us</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Resources</a></li>
+          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6">
+      <p class="text-[11px] text-white/20">&copy; 2026 Primary Transformers. All rights reserved.</p>
+      <a href="#" class="text-[11px] text-white/20 hover:text-white/40 transition-colors">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     JS
+══════════════════════════════════════ -->
+<script>
+// ── Nav scroll ──────────────────────────────
+const nav = document.getElementById('nav');
+const navLinks = document.querySelectorAll('.nav-link');
+const navLogoText = document.getElementById('nav-logo-text');
+
+function updateNav() {
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(255,255,255,0.97)';
+    nav.style.borderBottom = '1px solid #ebebeb';
+    nav.style.backdropFilter = 'blur(12px)';
+    navLogoText.style.color = '#0a0a0f';
+    navLinks.forEach(l => l.style.color = '#333');
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.borderBottom = 'none';
+    nav.style.backdropFilter = 'none';
+    navLogoText.style.color = '#fff';
+    navLinks.forEach(l => l.style.color = 'rgba(255,255,255,0.8)');
+  }
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// ── Mobile menu ─────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+hamburger.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  mobileMenu.style.display = menuOpen ? 'flex' : 'none';
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  menuOpen = false;
+  mobileMenu.style.display = 'none';
+}));
+
+// ── Scroll reveal ───────────────────────────
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => ro.observe(el));
+
+// ── Difference cards ─────────────────────────
+const diffBtns = document.querySelectorAll('.diff-btn');
+const diffCards = document.querySelectorAll('.diff-card');
+let diffActive = 0;
+
+function setDiff(idx) {
+  diffBtns.forEach((btn, i) => {
+    const isActive = i === idx;
+    btn.style.borderColor = isActive ? '#2000D3' : 'rgba(255,255,255,0.08)';
+    btn.style.background = isActive ? 'rgba(32,0,211,0.1)' : 'transparent';
+    const icon = btn.querySelector('span');
+    icon.style.background = isActive ? '#2000D3' : 'rgba(255,255,255,0.08)';
+    const text = btn.querySelector('p');
+    if (text) text.style.color = isActive ? '#fff' : 'rgba(255,255,255,0.6)';
+  });
+  diffCards.forEach((card, i) => {
+    card.style.opacity = i === idx ? '1' : '0';
+    card.style.pointerEvents = i === idx ? 'auto' : 'none';
+  });
+  diffActive = idx;
+}
+
+diffBtns.forEach((btn, i) => btn.addEventListener('click', () => setDiff(i)));
+setInterval(() => setDiff((diffActive + 1) % 4), 4000);
+
+// ── Product slider ───────────────────────────
+const prodTrack = document.getElementById('product-track');
+const prodPrev = document.getElementById('prod-prev');
+const prodNext = document.getElementById('prod-next');
+const prodCurrent = document.getElementById('prod-current');
+let prodIdx = 0;
+const prodTotal = 5;
+const prodVisible = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+const prodMax = prodTotal - prodVisible;
+
+function updateProd() {
+  const cards = prodTrack.querySelectorAll('.product-card');
+  const cardW = cards[0] ? cards[0].offsetWidth + 20 : 0;
+  prodTrack.style.transform = `translateX(-${prodIdx * cardW}px)`;
+  prodCurrent.textContent = String(prodIdx + 1).padStart(2, '0');
+  prodPrev.disabled = prodIdx === 0;
+  prodNext.disabled = prodIdx >= prodMax;
+  prodPrev.style.opacity = prodIdx === 0 ? '0.3' : '1';
+  prodNext.style.opacity = prodIdx >= prodMax ? '0.3' : '1';
+}
+prodPrev.addEventListener('click', () => { if (prodIdx > 0) { prodIdx--; updateProd(); } });
+prodNext.addEventListener('click', () => { if (prodIdx < prodMax) { prodIdx++; updateProd(); } });
+
+// ── Testimonial slider ───────────────────────
+const testTrack = document.getElementById('test-track');
+const testPrev = document.getElementById('test-prev');
+const testNext = document.getElementById('test-next');
+const testDots = document.querySelectorAll('.swiper-dot');
+let testIdx = 0;
+
+function updateTest() {
+  const cards = testTrack.querySelectorAll('.testimonial-card');
+  const cardW = cards[0] ? cards[0].offsetWidth + 24 : 0;
+  const maxIdx = window.innerWidth < 768 ? 2 : 1;
+  testTrack.style.transform = `translateX(-${testIdx * cardW}px)`;
+  testDots.forEach((d, i) => {
+    d.classList.toggle('active', i === testIdx);
+    d.style.width = i === testIdx ? '24px' : '8px';
+    d.style.background = i === testIdx ? '#fff' : 'rgba(255,255,255,0.25)';
+  });
+}
+testPrev.addEventListener('click', () => { if (testIdx > 0) { testIdx--; updateTest(); } });
+testNext.addEventListener('click', () => { if (testIdx < 1) { testIdx++; updateTest(); } });
+
+// ── Markets tabs ─────────────────────────────
+const marketTabs = document.querySelectorAll('.market-tab');
+const marketPanels = document.querySelectorAll('.market-panel');
+let marketIdx = 0;
+let marketTimer = null;
+
+function setMarket(idx) {
+  marketTabs.forEach((tab, i) => {
+    const isActive = i === idx;
+    tab.style.borderColor = isActive ? '#2000D3' : 'rgba(0,0,0,0.06)';
+    tab.style.background = isActive ? 'rgba(32,0,211,0.06)' : 'transparent';
+    const text = tab.querySelector('p');
+    if (text) { text.style.color = isActive ? '#0a0a0f' : ''; text.style.fontWeight = isActive ? '600' : ''; }
+    const svg = tab.querySelector('svg');
+    if (svg) svg.setAttribute('stroke', isActive ? '#2000D3' : '#888');
+    const bar = tab.querySelector('.tab-progress-bar');
+    if (bar) {
+      bar.style.width = '0%';
+      bar.style.transition = 'none';
+      if (isActive) {
+        requestAnimationFrame(() => {
+          bar.style.transition = 'width 3s linear';
+          bar.style.width = '100%';
+        });
+      }
+    }
+  });
+  marketPanels.forEach((panel, i) => {
+    panel.style.opacity = i === idx ? '1' : '0';
+    panel.style.pointerEvents = i === idx ? 'auto' : 'none';
+  });
+  marketIdx = idx;
+}
+
+marketTabs.forEach((tab, i) => {
+  tab.addEventListener('click', () => {
+    clearInterval(marketTimer);
+    setMarket(i);
+    marketTimer = setInterval(() => setMarket((marketIdx + 1) % 5), 3000);
+  });
+});
+
+document.getElementById('market-prev').addEventListener('click', () => {
+  clearInterval(marketTimer);
+  setMarket((marketIdx - 1 + 5) % 5);
+  marketTimer = setInterval(() => setMarket((marketIdx + 1) % 5), 3000);
+});
+document.getElementById('market-next').addEventListener('click', () => {
+  clearInterval(marketTimer);
+  setMarket((marketIdx + 1) % 5);
+  marketTimer = setInterval(() => setMarket((marketIdx + 1) % 5), 3000);
+});
+
+// Init progress bar
+marketTimer = setInterval(() => setMarket((marketIdx + 1) % 5), 3000);
+setMarket(0);
+
+// ── Contact form ─────────────────────────────
+document.getElementById('contact-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Message Sent!';
+  btn.style.background = '#15803d';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Send Message';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 4000);
+});
+</script>
+
+</body>
+</html>
