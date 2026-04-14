@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transformer Builder — Primary Transformers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#2000D3',
+            'brand-dark': '#1600a8',
+            'brand-deep': '#080A98',
+            dark: '#0a0a0f',
+            'dark-2': '#111118',
+            'dark-3': '#16161f',
+          },
+          fontFamily: { sans: ['Inter', 'Arial', 'sans-serif'] },
+          letterSpacing: { tightest: '-0.03em' },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+
+    /* Nav */
+    .nav-item:hover .nav-dropdown { display: block; }
+
+    /* Toggle */
+    .mode-toggle { display: flex; background: #f1f5f9; border-radius: 10px; padding: 3px; gap: 2px; }
+    .mode-btn { padding: 8px 28px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; background: transparent; color: #6b7280; }
+    .mode-btn.active { background: #fff; color: #0a0a0f; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+
+    /* Accordion */
+    .acc-body { display: none; }
+    .acc-body.open { display: block; }
+    .acc-chevron { transition: transform 0.2s; }
+    .acc-chevron.open { transform: rotate(180deg); }
+
+    /* Section check indicator */
+    .section-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #d1d5db; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+    .section-check.done { background: #2000D3; border-color: #2000D3; }
+
+    /* Form fields */
+    .field-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 5px; display: block; }
+    .field-input { width: 100%; padding: 9px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 0.875rem; color: #0a0a0f; background: #fff; outline: none; font-family: inherit; transition: border-color 0.15s; }
+    .field-input:focus { border-color: #2000D3; box-shadow: 0 0 0 3px rgba(32,0,211,0.08); }
+    .field-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+
+    /* Spec review panel */
+    .spec-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid #f1f5f9; gap: 12px; }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-key { font-size: 0.8125rem; color: #374151; flex-shrink: 0; }
+    .spec-val { font-size: 0.8125rem; color: #9ca3af; text-align: right; font-weight: 400; }
+    .spec-val.filled { color: #0a0a0f; font-weight: 600; }
+
+    /* Spec section header */
+    .spec-section-head { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #2000D3; margin: 16px 0 4px; display: flex; align-items: center; gap-6px; }
+
+    /* Sticky review */
+    @media (min-width: 1024px) {
+      .review-sticky { position: sticky; top: 88px; max-height: calc(100vh - 108px); overflow-y: auto; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+    /* Submit */
+    .submit-btn { background: #2000D3; color: #fff; font-weight: 700; font-size: 0.9375rem; padding: 14px 40px; border-radius: 10px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s, transform 0.15s; }
+    .submit-btn:hover { background: #1600a8; }
+    .submit-btn:active { transform: scale(0.97); }
+
+    /* High level card grid */
+    .hl-card { background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: border-color 0.15s, box-shadow 0.15s; }
+    .hl-card:hover { border-color: #c4b5fd; }
+
+    /* Nav scroll */
+    .nav-scrolled { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+    .nav-scrolled .nav-logo-text { color: #0a0a0f !important; }
+    .nav-scrolled .nav-link { color: #374151 !important; }
+    .nav-scrolled .nav-link:hover { color: #0a0a0f !important; }
+  </style>
+</head>
+<body class="bg-gray-50 text-dark font-sans antialiased">
+
+<!-- ══ NAV ══ -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-scrolled" style="padding: 0 clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto flex items-center justify-between h-16 md:h-20">
+    <a href="/" class="flex items-center gap-2.5 shrink-0">
+      <svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g transform="rotate(-15, 8, 13)">
+          <rect x="6.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+          <rect x="4.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+          <rect x="5" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+        </g>
+        <g transform="rotate(15, 26, 13)">
+          <rect x="24.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+          <rect x="22.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+          <rect x="23" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+        </g>
+        <path fill="#2000D3" fill-rule="evenodd" d="M 4 44 L 4 15 A 2 2 0 0 1 6 13 L 30 13 A 2 2 0 0 1 32 15 L 32 31 A 2 2 0 0 1 30 33 L 9 33 L 9 44 Z M 9 18 L 25 18 A 2 2 0 0 1 27 20 L 27 26 A 2 2 0 0 1 25 28 L 9 28 Z"/>
+      </svg>
+      <span class="nav-logo-text font-bold text-[15px] text-dark tracking-tight transition-colors duration-300">Primary Transformers</span>
+    </a>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="/" class="text-sm font-medium text-gray-500 hover:text-dark transition-colors whitespace-nowrap">← Back to Home</a>
+      <a href="index.html#contact" class="px-4 sm:px-5 py-2 sm:py-2.5 bg-brand text-white text-sm font-semibold rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200 whitespace-nowrap">Contact Us</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="bg-white border-b border-gray-100" style="padding-top: 80px;">
+  <div class="max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
+    <h1 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark tracking-tightest leading-[1.1] mb-2">Transformer Builder</h1>
+    <p class="text-gray-500 text-base mb-8 max-w-lg">Configure your transformer requirements. Our engineers will review and respond within one business day.</p>
+
+    <!-- Mode toggle -->
+    <div class="mode-toggle w-fit">
+      <button class="mode-btn active" id="btn-highlevel" onclick="setMode('highlevel')">High-Level</button>
+      <button class="mode-btn" id="btn-specific" onclick="setMode('specific')">Specific</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HIGH-LEVEL MODE ══ -->
+<div id="mode-highlevel" class="max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
+  <div class="max-w-3xl">
+    <div class="grid md:grid-cols-2 gap-5">
+
+      <!-- Basic Info -->
+      <div class="hl-card md:col-span-2">
+        <p class="text-xs font-bold tracking-[0.1em] uppercase text-brand mb-4">01 — Basic Information</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div>
+            <label class="field-label">Company Name</label>
+            <input class="field-input" type="text" placeholder="Acme Power Co." data-spec="hl-company" oninput="updateSpec(this,'hl-company')" />
+          </div>
+          <div>
+            <label class="field-label">Project / Site Name</label>
+            <input class="field-input" type="text" placeholder="Substation Alpha" data-spec="hl-project" oninput="updateSpec(this,'hl-project')" />
+          </div>
+          <div>
+            <label class="field-label">Contact Name</label>
+            <input class="field-input" type="text" placeholder="Jane Smith" data-spec="hl-contact" oninput="updateSpec(this,'hl-contact')" />
+          </div>
+          <div>
+            <label class="field-label">Email</label>
+            <input class="field-input" type="email" placeholder="jane@example.com" data-spec="hl-email" oninput="updateSpec(this,'hl-email')" />
+          </div>
+          <div>
+            <label class="field-label">Phone</label>
+            <input class="field-input" type="tel" placeholder="+1 (555) 000-0000" data-spec="hl-phone" oninput="updateSpec(this,'hl-phone')" />
+          </div>
+          <div>
+            <label class="field-label">Market / Application</label>
+            <select class="field-input field-select" data-spec="hl-market" onchange="updateSpec(this,'hl-market')">
+              <option value="">Select market…</option>
+              <option>Renewables</option>
+              <option>Data Centers</option>
+              <option>Utilities</option>
+              <option>Oil &amp; Gas</option>
+              <option>Industrial</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transformer Type -->
+      <div class="hl-card">
+        <p class="text-xs font-bold tracking-[0.1em] uppercase text-brand mb-4">02 — Transformer Type</p>
+        <div class="flex flex-col gap-3">
+          <label class="field-label">Type</label>
+          <select class="field-input field-select" data-spec="hl-type" onchange="updateSpec(this,'hl-type')">
+            <option value="">Select type…</option>
+            <option>Power Transformer</option>
+            <option>Distribution Transformer</option>
+            <option>Special Purpose</option>
+          </select>
+          <label class="field-label mt-1">Approximate MVA Rating</label>
+          <select class="field-input field-select" data-spec="hl-mva" onchange="updateSpec(this,'hl-mva')">
+            <option value="">Select range…</option>
+            <option>&lt; 1 MVA</option>
+            <option>1 – 5 MVA</option>
+            <option>5 – 20 MVA</option>
+            <option>20 – 100 MVA</option>
+            <option>100 – 300 MVA</option>
+            <option>&gt; 300 MVA</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Voltage -->
+      <div class="hl-card">
+        <p class="text-xs font-bold tracking-[0.1em] uppercase text-brand mb-4">03 — Voltage Levels</p>
+        <div class="flex flex-col gap-3">
+          <div>
+            <label class="field-label">High-Voltage Side (kV)</label>
+            <input class="field-input" type="text" placeholder="e.g. 115" data-spec="hl-hv" oninput="updateSpec(this,'hl-hv')" />
+          </div>
+          <div>
+            <label class="field-label">Low-Voltage Side (kV)</label>
+            <input class="field-input" type="text" placeholder="e.g. 13.8" data-spec="hl-lv" oninput="updateSpec(this,'hl-lv')" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="hl-card">
+        <p class="text-xs font-bold tracking-[0.1em] uppercase text-brand mb-4">04 — Timeline</p>
+        <div class="flex flex-col gap-3">
+          <div>
+            <label class="field-label">Required Delivery Date</label>
+            <input class="field-input" type="date" data-spec="hl-delivery" oninput="updateSpec(this,'hl-delivery')" />
+          </div>
+          <div>
+            <label class="field-label">Quantity</label>
+            <input class="field-input" type="number" placeholder="1" min="1" data-spec="hl-qty" oninput="updateSpec(this,'hl-qty')" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="hl-card">
+        <p class="text-xs font-bold tracking-[0.1em] uppercase text-brand mb-4">05 — Special Requirements</p>
+        <div>
+          <label class="field-label">Notes / Special Requirements</label>
+          <textarea class="field-input" rows="4" placeholder="Describe any special requirements, site constraints, or standards…" data-spec="hl-notes" oninput="updateSpec(this,'hl-notes')" style="resize:vertical;"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Submit -->
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <button class="submit-btn" onclick="handleSubmit()">
+        Submit Request
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p class="text-xs text-gray-400">Our engineers will respond within 1 business day.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SPECIFIC MODE ══ -->
+<div id="mode-specific" class="hidden max-w-screen-xl mx-auto px-4 lg:px-12 py-10">
+  <div class="grid lg:grid-cols-[360px_1fr] gap-8 items-start">
+
+    <!-- ── LEFT: Accordion form ── -->
+    <div class="flex flex-col gap-3" id="spec-form">
+
+      <!-- 01 Basic Information -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-0"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">01 &nbsp; Basic Information</span>
+          <svg class="acc-chevron open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body open px-5 pb-5 flex flex-col gap-3">
+          <div><label class="field-label">Company Name</label><input class="field-input" type="text" placeholder="Acme Power Co." data-spec="company" oninput="updateSpec(this,'company');checkSection(0,[1,2,3,4,5,6])" /></div>
+          <div><label class="field-label">Project / Site Name</label><input class="field-input" type="text" placeholder="Substation Alpha" data-spec="project" oninput="updateSpec(this,'project');checkSection(0,[1,2,3,4,5,6])" /></div>
+          <div><label class="field-label">Site Address / GPS Coordinates</label><input class="field-input" type="text" placeholder="123 Power Ave, Dallas TX" data-spec="site" oninput="updateSpec(this,'site');checkSection(0,[1,2,3,4,5,6])" /></div>
+          <div><label class="field-label">Primary Contact Name</label><input class="field-input" type="text" placeholder="Jane Smith" data-spec="contact" oninput="updateSpec(this,'contact');checkSection(0,[1,2,3,4,5,6])" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">Email</label><input class="field-input" type="email" placeholder="jane@example.com" data-spec="email" oninput="updateSpec(this,'email');checkSection(0,[1,2,3,4,5,6])" /></div>
+            <div><label class="field-label">Phone</label><input class="field-input" type="tel" placeholder="+1 555 000 0000" data-spec="phone" oninput="updateSpec(this,'phone');checkSection(0,[1,2,3,4,5,6])" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Electrical Ratings -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-1"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">02 &nbsp; Electrical Ratings</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">HV Rating (kV)</label><input class="field-input" type="text" placeholder="115" data-spec="hv-rating" oninput="updateSpec(this,'hv-rating');checkSection(1,[7,8,9,10,11,12])" /></div>
+            <div><label class="field-label">LV Rating (kV)</label><input class="field-input" type="text" placeholder="13.8" data-spec="lv-rating" oninput="updateSpec(this,'lv-rating');checkSection(1,[7,8,9,10,11,12])" /></div>
+          </div>
+          <div><label class="field-label">MVA Rating (continuous)</label><input class="field-input" type="text" placeholder="50" data-spec="mva" oninput="updateSpec(this,'mva');checkSection(1,[7,8,9,10,11,12])" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="field-label">Frequency</label>
+              <select class="field-input field-select" data-spec="frequency" onchange="updateSpec(this,'frequency');checkSection(1,[7,8,9,10,11,12])">
+                <option value="">Select…</option>
+                <option selected>60 Hz</option>
+                <option>50 Hz</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Phase</label>
+              <select class="field-input field-select" data-spec="phase" onchange="updateSpec(this,'phase');checkSection(1,[7,8,9,10,11,12])">
+                <option value="">Select…</option>
+                <option selected>3-Phase (Standard)</option>
+                <option>1-Phase</option>
+              </select>
+            </div>
+          </div>
+          <div><label class="field-label">Connection / Vector Group</label><input class="field-input" type="text" placeholder="e.g. Dyn11, YNd1" data-spec="vector-group" oninput="updateSpec(this,'vector-group');checkSection(1,[7,8,9,10,11,12])" /></div>
+          <div>
+            <label class="field-label">Grounding Preference</label>
+            <select class="field-input field-select" data-spec="grounding" onchange="updateSpec(this,'grounding');checkSection(1,[7,8,9,10,11,12])">
+              <option value="">Select…</option>
+              <option>Solidly Grounded</option>
+              <option>Resistance Grounded</option>
+              <option>Ungrounded</option>
+              <option>Zig-Zag Grounding</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Impedance & Performance -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-2"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">03 &nbsp; Impedance &amp; Performance</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div><label class="field-label">Target Impedance (%Z)</label><input class="field-input" type="text" placeholder="e.g. 8.5" data-spec="impedance" oninput="updateSpec(this,'impedance')" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">No-Load Loss Guarantee (W)</label><input class="field-input" type="text" placeholder="e.g. 45000" data-spec="no-load-loss" oninput="updateSpec(this,'no-load-loss')" /></div>
+            <div><label class="field-label">Load Loss Guarantee (W)</label><input class="field-input" type="text" placeholder="e.g. 200000" data-spec="load-loss" oninput="updateSpec(this,'load-loss')" /></div>
+          </div>
+          <div>
+            <label class="field-label">Temperature Rise</label>
+            <select class="field-input field-select" data-spec="temp-rise" onchange="updateSpec(this,'temp-rise')">
+              <option value="">Select…</option>
+              <option>55°C</option>
+              <option>65°C</option>
+              <option>65/55°C (dual rating)</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="field-label">Sound Level Requirement</label>
+              <select class="field-input field-select" data-spec="sound-req" onchange="updateSpec(this,'sound-req')">
+                <option value="">Select…</option>
+                <option>Standard NEMA</option>
+                <option>Low Sound</option>
+                <option>Ultra-Low Sound</option>
+                <option>Custom Limit</option>
+              </select>
+            </div>
+            <div><label class="field-label">Sound Limit (dB(A))</label><input class="field-input" type="text" placeholder="e.g. 70" data-spec="sound-limit" oninput="updateSpec(this,'sound-limit')" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Tap Changer -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-3"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">04 &nbsp; Tap Changer</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div>
+            <label class="field-label">Tap Changer Type</label>
+            <select class="field-input field-select" data-spec="tap-type" onchange="updateSpec(this,'tap-type')">
+              <option value="">Select…</option>
+              <option>None (Fixed)</option>
+              <option>DETC (De-energized)</option>
+              <option>OLTC (On-load)</option>
+            </select>
+          </div>
+          <div><label class="field-label">Tap Range (%)</label><input class="field-input" type="text" placeholder="e.g. ±10%" data-spec="tap-range" oninput="updateSpec(this,'tap-range')" /></div>
+          <div><label class="field-label">Tap Steps</label><input class="field-input" type="text" placeholder="e.g. 9 positions" data-spec="tap-steps" oninput="updateSpec(this,'tap-steps')" /></div>
+          <div>
+            <label class="field-label">Preferred Tap Location</label>
+            <select class="field-input field-select" data-spec="tap-location" onchange="updateSpec(this,'tap-location')">
+              <option value="">Select…</option>
+              <option>HV Winding</option>
+              <option>LV Winding</option>
+              <option>Tertiary</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 Dielectric Requirements -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-4"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">05 &nbsp; Dielectric Requirements</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">HV BIL (kV)</label><input class="field-input" type="text" placeholder="e.g. 550" data-spec="hv-bil" oninput="updateSpec(this,'hv-bil')" /></div>
+            <div><label class="field-label">LV BIL (kV)</label><input class="field-input" type="text" placeholder="e.g. 150" data-spec="lv-bil" oninput="updateSpec(this,'lv-bil')" /></div>
+          </div>
+          <div>
+            <label class="field-label">Surge / Lightning Requirements</label>
+            <select class="field-input field-select" data-spec="surge" onchange="updateSpec(this,'surge')">
+              <option value="">Select…</option>
+              <option>Standard</option>
+              <option>Enhanced (direct strike risk)</option>
+              <option>Surge Arresters Required</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 Mechanical & Transport -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-5"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">06 &nbsp; Mechanical &amp; Transport</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">Max Shipping Weight (kg)</label><input class="field-input" type="text" placeholder="e.g. 80000" data-spec="max-weight" oninput="updateSpec(this,'max-weight')" /></div>
+            <div><label class="field-label">Seismic Rating</label><input class="field-input" type="text" placeholder="e.g. IEEE 693 Moderate" data-spec="seismic" oninput="updateSpec(this,'seismic')" /></div>
+          </div>
+          <p class="text-xs font-bold tracking-[0.08em] uppercase text-gray-400 mt-1">Dimension Limits</p>
+          <div class="grid grid-cols-3 gap-3">
+            <div><label class="field-label">Max Height (m)</label><input class="field-input" type="text" placeholder="e.g. 5.5" data-spec="max-height" oninput="updateSpec(this,'max-height')" /></div>
+            <div><label class="field-label">Max Width (m)</label><input class="field-input" type="text" placeholder="e.g. 4.0" data-spec="max-width" oninput="updateSpec(this,'max-width')" /></div>
+            <div><label class="field-label">Max Length (m)</label><input class="field-input" type="text" placeholder="e.g. 6.0" data-spec="max-length" oninput="updateSpec(this,'max-length')" /></div>
+          </div>
+          <div><label class="field-label">Site Footprint Constraints</label><input class="field-input" type="text" placeholder="Describe any site constraints…" data-spec="footprint" oninput="updateSpec(this,'footprint')" /></div>
+        </div>
+      </div>
+
+      <!-- 07 Cooling & Fluid -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-6"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">07 &nbsp; Cooling &amp; Fluid System</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div>
+            <label class="field-label">Cooling Class</label>
+            <select class="field-input field-select" data-spec="cooling-class" onchange="updateSpec(this,'cooling-class')">
+              <option value="">Select…</option>
+              <option>ONAN (Oil Natural, Air Natural)</option>
+              <option>ONAF (Oil Natural, Air Forced)</option>
+              <option>OFAF (Oil Forced, Air Forced)</option>
+              <option>ODAF (Oil Directed, Air Forced)</option>
+              <option>Dry-Type (AN)</option>
+              <option>Dry-Type (AF)</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Cooling Redundancy</label>
+            <select class="field-input field-select" data-spec="cooling-redundancy" onchange="updateSpec(this,'cooling-redundancy')">
+              <option value="">Select…</option>
+              <option>Standard (N)</option>
+              <option>N+1 Redundant</option>
+              <option>Full Redundancy</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Oil Type</label>
+            <select class="field-input field-select" data-spec="oil-type" onchange="updateSpec(this,'oil-type')">
+              <option value="">Select…</option>
+              <option>Mineral Oil (Standard)</option>
+              <option>FR3 (Natural Ester)</option>
+              <option>Silicone Fluid</option>
+              <option>Envirotemp (Biodegradable)</option>
+              <option>N/A (Dry-Type)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08 Environmental & Special -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-7"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">08 &nbsp; Environmental &amp; Special</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div>
+            <label class="field-label">Corrosion / Paint Class</label>
+            <select class="field-input field-select" data-spec="corrosion" onchange="updateSpec(this,'corrosion')">
+              <option value="">Select…</option>
+              <option>C2 (Low corrosion, urban)</option>
+              <option>C3 (Medium, industrial)</option>
+              <option>C4 (High, coastal/industrial)</option>
+              <option>C5 (Very high, offshore/marine)</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Noise Barriers Required</label>
+            <select class="field-input field-select" data-spec="noise-barriers" onchange="updateSpec(this,'noise-barriers')">
+              <option value="">Select…</option>
+              <option>No</option>
+              <option>Yes</option>
+              <option>TBD</option>
+            </select>
+          </div>
+          <div><label class="field-label">Altitude Above Sea Level (m)</label><input class="field-input" type="text" placeholder="e.g. 1000" data-spec="altitude" oninput="updateSpec(this,'altitude')" /></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">Max Ambient Temp (°C)</label><input class="field-input" type="text" placeholder="e.g. 40" data-spec="max-temp" oninput="updateSpec(this,'max-temp')" /></div>
+            <div><label class="field-label">Min Ambient Temp (°C)</label><input class="field-input" type="text" placeholder="e.g. -20" data-spec="min-temp" oninput="updateSpec(this,'min-temp')" /></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09 Testing Requirements -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-8"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">09 &nbsp; Testing Requirements</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div>
+            <label class="field-label">Testing Requirements</label>
+            <select class="field-input field-select" data-spec="testing" onchange="updateSpec(this,'testing')">
+              <option value="">Select…</option>
+              <option>Routine Tests Only</option>
+              <option>Routine + Type Tests</option>
+              <option>Full Factory Acceptance Test (FAT)</option>
+              <option>Witness Testing Required</option>
+            </select>
+          </div>
+          <div><label class="field-label">Partial Discharge Limit (pC)</label><input class="field-input" type="text" placeholder="e.g. 300" data-spec="pd-limit" oninput="updateSpec(this,'pd-limit')" /></div>
+          <div>
+            <label class="field-label">Optional Uploads / Documents</label>
+            <p class="text-xs text-gray-400 mt-1">Please email any spec documents to <span class="text-brand font-medium">specs@primarytransformers.com</span> referencing your project name.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 Compliance -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-9"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">10 &nbsp; Compliance</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5 flex flex-col gap-3">
+          <div>
+            <label class="field-label">Governing Standards</label>
+            <select class="field-input field-select" data-spec="standards" onchange="updateSpec(this,'standards')">
+              <option value="">Select primary standard…</option>
+              <option>IEEE C57 (ANSI)</option>
+              <option>IEC 60076</option>
+              <option>AS/NZS 60076</option>
+              <option>CSA C88</option>
+              <option>Multiple / Project-Specific</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Additional Standards / Certifications</label>
+            <input class="field-input" type="text" placeholder="e.g. UL Listed, NEMA, RoHS…" data-spec="add-standards" oninput="updateSpec(this,'add-standards')" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 11 Additional Notes -->
+      <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <button class="acc-trigger w-full flex items-center gap-3 px-5 py-4 text-left" onclick="toggleAcc(this)">
+          <div class="section-check" id="check-10"></div>
+          <span class="text-xs font-bold tracking-[0.1em] uppercase text-gray-400 flex-1">11 &nbsp; Additional Notes</span>
+          <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="acc-body px-5 pb-5">
+          <textarea class="field-input" rows="5" placeholder="Any additional project requirements, constraints, or context for our engineers…" data-spec="notes" oninput="updateSpec(this,'notes')" style="resize:vertical;"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="bg-white rounded-2xl border border-gray-100 p-5">
+        <button class="submit-btn w-full justify-center" onclick="handleSubmit()">
+          Submit Specification
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="text-xs text-gray-400 text-center mt-3">Our engineers will respond within 1 business day.</p>
+      </div>
+
+    </div><!-- end left -->
+
+    <!-- ── RIGHT: Spec Review ── -->
+    <div class="review-sticky">
+      <div class="bg-white rounded-2xl border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <p class="text-xs font-bold tracking-[0.14em] uppercase text-gray-400">Spec Review</p>
+          </div>
+          <button onclick="autofill()" class="text-xs font-semibold text-brand border border-brand/30 px-3 py-1.5 rounded-lg hover:bg-brand/5 transition-colors">Autofill Demo</button>
+        </div>
+
+        <!-- Section 01 -->
+        <p class="spec-section-head">01 Basic Information</p>
+        <div class="spec-row"><span class="spec-key">Company Name</span><span class="spec-val" id="rv-company">—</span></div>
+        <div class="spec-row"><span class="spec-key">Project / Site Name</span><span class="spec-val" id="rv-project">—</span></div>
+        <div class="spec-row"><span class="spec-key">Site Address / GPS</span><span class="spec-val" id="rv-site">—</span></div>
+        <div class="spec-row"><span class="spec-key">Primary Contact</span><span class="spec-val" id="rv-contact">—</span></div>
+        <div class="spec-row"><span class="spec-key">Email</span><span class="spec-val" id="rv-email">—</span></div>
+        <div class="spec-row"><span class="spec-key">Phone</span><span class="spec-val" id="rv-phone">—</span></div>
+
+        <!-- Section 02 -->
+        <p class="spec-section-head mt-4">02 Electrical Ratings</p>
+        <div class="spec-row"><span class="spec-key">HV Rating (kV)</span><span class="spec-val" id="rv-hv-rating">—</span></div>
+        <div class="spec-row"><span class="spec-key">LV Rating (kV)</span><span class="spec-val" id="rv-lv-rating">—</span></div>
+        <div class="spec-row"><span class="spec-key">MVA Rating</span><span class="spec-val" id="rv-mva">—</span></div>
+        <div class="spec-row"><span class="spec-key">Frequency</span><span class="spec-val filled" id="rv-frequency">60 Hz</span></div>
+        <div class="spec-row"><span class="spec-key">Phase</span><span class="spec-val filled" id="rv-phase">3-Phase (Standard)</span></div>
+        <div class="spec-row"><span class="spec-key">Connection / Vector Group</span><span class="spec-val" id="rv-vector-group">—</span></div>
+        <div class="spec-row"><span class="spec-key">Grounding Preference</span><span class="spec-val" id="rv-grounding">—</span></div>
+
+        <!-- Section 03 -->
+        <p class="spec-section-head mt-4">03 Impedance &amp; Performance</p>
+        <div class="spec-row"><span class="spec-key">Target Impedance (%Z)</span><span class="spec-val" id="rv-impedance">—</span></div>
+        <div class="spec-row"><span class="spec-key">No-Load Loss (W)</span><span class="spec-val" id="rv-no-load-loss">—</span></div>
+        <div class="spec-row"><span class="spec-key">Load Loss (W)</span><span class="spec-val" id="rv-load-loss">—</span></div>
+        <div class="spec-row"><span class="spec-key">Temperature Rise</span><span class="spec-val" id="rv-temp-rise">—</span></div>
+        <div class="spec-row"><span class="spec-key">Sound Level Req.</span><span class="spec-val" id="rv-sound-req">—</span></div>
+        <div class="spec-row"><span class="spec-key">Sound Limit (dB(A))</span><span class="spec-val" id="rv-sound-limit">—</span></div>
+
+        <!-- Section 04 -->
+        <p class="spec-section-head mt-4">04 Tap Changer</p>
+        <div class="spec-row"><span class="spec-key">Tap Changer Type</span><span class="spec-val" id="rv-tap-type">—</span></div>
+        <div class="spec-row"><span class="spec-key">Tap Range</span><span class="spec-val" id="rv-tap-range">—</span></div>
+        <div class="spec-row"><span class="spec-key">Tap Steps</span><span class="spec-val" id="rv-tap-steps">—</span></div>
+        <div class="spec-row"><span class="spec-key">Tap Location</span><span class="spec-val" id="rv-tap-location">—</span></div>
+
+        <!-- Section 05 -->
+        <p class="spec-section-head mt-4">05 Dielectric Requirements</p>
+        <div class="spec-row"><span class="spec-key">HV BIL (kV)</span><span class="spec-val" id="rv-hv-bil">—</span></div>
+        <div class="spec-row"><span class="spec-key">LV BIL (kV)</span><span class="spec-val" id="rv-lv-bil">—</span></div>
+        <div class="spec-row"><span class="spec-key">Surge / Lightning</span><span class="spec-val" id="rv-surge">—</span></div>
+
+        <!-- Section 06 -->
+        <p class="spec-section-head mt-4">06 Mechanical &amp; Transport</p>
+        <div class="spec-row"><span class="spec-key">Max Shipping Weight</span><span class="spec-val" id="rv-max-weight">—</span></div>
+        <div class="spec-row"><span class="spec-key">Max Height (m)</span><span class="spec-val" id="rv-max-height">—</span></div>
+        <div class="spec-row"><span class="spec-key">Max Width (m)</span><span class="spec-val" id="rv-max-width">—</span></div>
+        <div class="spec-row"><span class="spec-key">Max Length (m)</span><span class="spec-val" id="rv-max-length">—</span></div>
+        <div class="spec-row"><span class="spec-key">Seismic Rating</span><span class="spec-val" id="rv-seismic">—</span></div>
+        <div class="spec-row"><span class="spec-key">Footprint Constraints</span><span class="spec-val" id="rv-footprint">—</span></div>
+
+        <!-- Section 07 -->
+        <p class="spec-section-head mt-4">07 Cooling &amp; Fluid System</p>
+        <div class="spec-row"><span class="spec-key">Cooling Class</span><span class="spec-val" id="rv-cooling-class">—</span></div>
+        <div class="spec-row"><span class="spec-key">Cooling Redundancy</span><span class="spec-val" id="rv-cooling-redundancy">—</span></div>
+        <div class="spec-row"><span class="spec-key">Oil Type</span><span class="spec-val" id="rv-oil-type">—</span></div>
+
+        <!-- Section 08 -->
+        <p class="spec-section-head mt-4">08 Environmental &amp; Special</p>
+        <div class="spec-row"><span class="spec-key">Corrosion / Paint Class</span><span class="spec-val" id="rv-corrosion">—</span></div>
+        <div class="spec-row"><span class="spec-key">Noise Barriers</span><span class="spec-val" id="rv-noise-barriers">—</span></div>
+        <div class="spec-row"><span class="spec-key">Altitude (m)</span><span class="spec-val" id="rv-altitude">—</span></div>
+        <div class="spec-row"><span class="spec-key">Max Ambient Temp</span><span class="spec-val" id="rv-max-temp">—</span></div>
+        <div class="spec-row"><span class="spec-key">Min Ambient Temp</span><span class="spec-val" id="rv-min-temp">—</span></div>
+
+        <!-- Section 09 -->
+        <p class="spec-section-head mt-4">09 Testing Requirements</p>
+        <div class="spec-row"><span class="spec-key">Testing Requirements</span><span class="spec-val" id="rv-testing">—</span></div>
+        <div class="spec-row"><span class="spec-key">PD Limit (pC)</span><span class="spec-val" id="rv-pd-limit">—</span></div>
+
+        <!-- Section 10 -->
+        <p class="spec-section-head mt-4">10 Compliance</p>
+        <div class="spec-row"><span class="spec-key">Governing Standards</span><span class="spec-val" id="rv-standards">—</span></div>
+        <div class="spec-row"><span class="spec-key">Additional Standards</span><span class="spec-val" id="rv-add-standards">—</span></div>
+
+        <!-- Section 11 -->
+        <p class="spec-section-head mt-4">11 Additional Notes</p>
+        <div class="spec-row"><span class="spec-key">Notes</span><span class="spec-val" id="rv-notes">—</span></div>
+
+      </div>
+    </div><!-- end right -->
+
+  </div>
+</div><!-- end specific -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="bg-dark" style="padding: clamp(3rem,5vw,5rem) clamp(1rem,4vw,3rem) 2rem;">
+  <div class="max-w-screen-xl mx-auto flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8">
+    <a href="/" class="flex items-center gap-2.5">
+      <svg width="27" height="33" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g transform="rotate(-15, 8, 13)"><rect x="6.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/><rect x="4.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/><rect x="5" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/></g>
+        <g transform="rotate(15, 26, 13)"><rect x="24.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/><rect x="22.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/><rect x="23" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/></g>
+        <path fill="#2000D3" fill-rule="evenodd" d="M 4 44 L 4 15 A 2 2 0 0 1 6 13 L 30 13 A 2 2 0 0 1 32 15 L 32 31 A 2 2 0 0 1 30 33 L 9 33 L 9 44 Z M 9 18 L 25 18 A 2 2 0 0 1 27 20 L 27 26 A 2 2 0 0 1 25 28 L 9 28 Z"/>
+      </svg>
+      <span class="text-white font-bold text-sm">Primary Transformers</span>
+    </a>
+    <p class="text-xs text-white/30">© 2025 Primary Transformers. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// ── Mode toggle ─────────────────────────────
+function setMode(mode) {
+  document.getElementById('mode-highlevel').classList.toggle('hidden', mode !== 'highlevel');
+  document.getElementById('mode-specific').classList.toggle('hidden', mode !== 'specific');
+  document.getElementById('btn-highlevel').classList.toggle('active', mode === 'highlevel');
+  document.getElementById('btn-specific').classList.toggle('active', mode === 'specific');
+}
+
+// ── Accordion ───────────────────────────────
+function toggleAcc(btn) {
+  const body = btn.nextElementSibling;
+  const chevron = btn.querySelector('.acc-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+// ── Spec review live update ──────────────────
+function updateSpec(el, key) {
+  const val = el.value.trim();
+  const rv = document.getElementById('rv-' + key);
+  if (rv) {
+    rv.textContent = val || '—';
+    rv.classList.toggle('filled', !!val);
+  }
+}
+
+// ── Section completion check ─────────────────
+function checkSection(sectionIdx, fieldIndices) {
+  // Check all inputs in this section
+  const form = document.getElementById('spec-form');
+  const acc = form.querySelectorAll('.acc-body')[sectionIdx];
+  if (!acc) return;
+  const inputs = acc.querySelectorAll('input, select, textarea');
+  let filled = 0;
+  inputs.forEach(i => { if (i.value.trim()) filled++; });
+  const check = document.getElementById('check-' + sectionIdx);
+  if (check) {
+    if (filled > 0) {
+      check.classList.add('done');
+      check.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else {
+      check.classList.remove('done');
+      check.innerHTML = '';
+    }
+  }
+}
+
+// Listen to all inputs for section checks
+document.querySelectorAll('#spec-form input, #spec-form select, #spec-form textarea').forEach(el => {
+  el.addEventListener('input', function() {
+    updateSpec(this, this.dataset.spec);
+    // Find which acc-body this belongs to
+    const body = this.closest('.acc-body');
+    if (body) {
+      const allBodies = Array.from(document.querySelectorAll('#spec-form .acc-body'));
+      const idx = allBodies.indexOf(body);
+      if (idx >= 0) checkSection(idx);
+    }
+  });
+  el.addEventListener('change', function() {
+    updateSpec(this, this.dataset.spec);
+    const body = this.closest('.acc-body');
+    if (body) {
+      const allBodies = Array.from(document.querySelectorAll('#spec-form .acc-body'));
+      const idx = allBodies.indexOf(body);
+      if (idx >= 0) checkSection(idx);
+    }
+  });
+});
+
+// ── Autofill demo ────────────────────────────
+function autofill() {
+  const demo = {
+    company: 'Acme Power Co.', project: 'Substation Alpha', site: '1200 Grid Blvd, Dallas TX 75201',
+    contact: 'Jane Smith', email: 'jane@acmepower.com', phone: '+1 (214) 555-0198',
+    'hv-rating': '115', 'lv-rating': '13.8', mva: '50', frequency: '60 Hz', phase: '3-Phase (Standard)',
+    'vector-group': 'YNd11', grounding: 'Solidly Grounded',
+    impedance: '8.5', 'no-load-loss': '45000', 'load-loss': '200000', 'temp-rise': '65°C',
+    'sound-req': 'Low Sound', 'sound-limit': '70',
+    'tap-type': 'DETC (De-energized)', 'tap-range': '±10%', 'tap-steps': '9 positions', 'tap-location': 'HV Winding',
+    'hv-bil': '550', 'lv-bil': '150', surge: 'Standard',
+    'max-weight': '80000', seismic: 'IEEE 693 Moderate', 'max-height': '5.5', 'max-width': '4.0', 'max-length': '6.0', footprint: 'None',
+    'cooling-class': 'ONAN (Oil Natural, Air Natural)', 'cooling-redundancy': 'N+1 Redundant', 'oil-type': 'Mineral Oil (Standard)',
+    corrosion: 'C3 (Medium, industrial)', 'noise-barriers': 'No', altitude: '300', 'max-temp': '40', 'min-temp': '-20',
+    testing: 'Full Factory Acceptance Test (FAT)', 'pd-limit': '300',
+    standards: 'IEEE C57 (ANSI)', 'add-standards': 'UL Listed',
+    notes: 'Transformer to serve new wind generation substation. Delivery Q4 2025.'
+  };
+  Object.entries(demo).forEach(([key, val]) => {
+    const el = document.querySelector(`[data-spec="${key}"]`);
+    if (el) {
+      el.value = val;
+      updateSpec(el, key);
+    }
+  });
+  // Open all accordions & check sections
+  document.querySelectorAll('.acc-body').forEach((body, i) => {
+    body.classList.add('open');
+    const chevron = body.previousElementSibling?.querySelector('.acc-chevron');
+    if (chevron) chevron.classList.add('open');
+    checkSection(i);
+  });
+}
+
+// ── Submit → Formspree ───────────────────────
+async function handleSubmit() {
+  const mode = document.getElementById('mode-specific').classList.contains('hidden') ? 'highlevel' : 'specific';
+  const btns = document.querySelectorAll('.submit-btn');
+
+  // Set loading state
+  btns.forEach(b => { b.disabled = true; b.style.opacity = '0.7'; b.childNodes[0].textContent = 'Sending… '; });
+
+  // Collect all data-spec fields from active mode
+  const container = document.getElementById('mode-' + mode);
+  const fields = container.querySelectorAll('[data-spec]');
+  const data = { _subject: 'Transformer Builder Submission (' + (mode === 'specific' ? 'Specific' : 'High-Level') + ')' };
+  fields.forEach(el => {
+    if (el.value.trim()) data[el.dataset.spec] = el.value.trim();
+  });
+
+  try {
+    const res = await fetch('https://formspree.io/f/xbdqlygk', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+    });
+    if (res.ok) {
+      btns.forEach(b => {
+        b.style.opacity = '1';
+        b.style.background = '#15803d';
+        b.childNodes[0].textContent = 'Submitted! ';
+      });
+      setTimeout(() => {
+        btns.forEach(b => {
+          b.disabled = false;
+          b.style.background = '';
+          b.childNodes[0].textContent = mode === 'specific' ? 'Submit Specification ' : 'Submit Request ';
+        });
+      }, 5000);
+    } else {
+      throw new Error();
+    }
+  } catch {
+    btns.forEach(b => {
+      b.disabled = false;
+      b.style.opacity = '1';
+      b.style.background = '#dc2626';
+      b.childNodes[0].textContent = 'Error — Try Again ';
+    });
+    setTimeout(() => {
+      btns.forEach(b => { b.style.background = ''; b.childNodes[0].textContent = mode === 'specific' ? 'Submit Specification ' : 'Submit Request '; });
+    }, 4000);
+  }
+}
+</script>
+</body>
+</html>
