@@ -122,9 +122,21 @@
 
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2.5 shrink-0">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-        <rect width="30" height="30" rx="5" fill="#2000D3"/>
-        <path d="M6 15h4.5l2-7 4 14 2-9 2 4.5H24" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg width="36" height="44" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left bushing: angled 15° outward left -->
+        <g transform="rotate(-15, 8, 13)">
+          <rect x="6.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+          <rect x="4.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+          <rect x="5" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+        </g>
+        <!-- Right bushing: angled 15° outward right -->
+        <g transform="rotate(15, 26, 13)">
+          <rect x="24.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+          <rect x="22.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+          <rect x="23" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+        </g>
+        <!-- P with constant 5px wall thickness throughout -->
+        <path fill="#2000D3" fill-rule="evenodd" d="M 4 44 L 4 15 A 2 2 0 0 1 6 13 L 30 13 A 2 2 0 0 1 32 15 L 32 31 A 2 2 0 0 1 30 33 L 9 33 L 9 44 Z M 9 18 L 25 18 A 2 2 0 0 1 27 20 L 27 26 A 2 2 0 0 1 25 28 L 9 28 Z"/>
       </svg>
       <span id="nav-logo-text" class="font-bold text-[15px] text-white tracking-tight transition-colors duration-300">Primary Transformers</span>
     </a>
@@ -209,12 +221,11 @@
 
 <!-- Mobile menu -->
 <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark flex-col pt-24 px-6 gap-4 hidden">
-  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Products</a>
-  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Markets</a>
-  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">The Primary Experience</a>
-  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Services</a>
-  <a href="#" class="text-2xl font-bold text-white border-b border-white/10 pb-4">About Us</a>
-  <a href="#contact" class="mt-4 w-full text-center py-3 bg-brand text-white font-semibold rounded-lg">Contact Us</a>
+  <a href="#" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Home</a>
+  <a href="#products" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Products</a>
+  <a href="#markets" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Markets</a>
+  <a href="#services" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Services</a>
+  <a href="#contact" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="mt-4 w-full text-center py-3 bg-brand text-white font-semibold rounded-lg">Contact Us</a>
 </div>
 
 
@@ -297,55 +308,53 @@
 <!-- ══════════════════════════════════════
      THE PRIMARY DIFFERENCE
 ══════════════════════════════════════ -->
-<section class="bg-dark-2 relative grain overflow-hidden" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
-  <!-- bg glow -->
-  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(32,0,211,0.12) 0%, transparent 70%);"></div>
+<section class="bg-gray-50 relative overflow-hidden" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
 
   <div class="max-w-screen-xl mx-auto">
     <div class="grid lg:grid-cols-2 gap-16 items-start">
 
       <!-- Left: heading + nav -->
       <div class="reveal">
-        <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-white leading-[1.1] tracking-tightest mb-10">
+        <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-extrabold text-dark leading-[1.1] tracking-tightest mb-10">
           Why Use Primary?
         </h2>
 
         <!-- Card nav buttons -->
         <div id="diff-nav" class="flex flex-col gap-3">
-          <button data-card="0" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-brand bg-brand/10">
+          <button data-card="0" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-brand bg-brand/8">
             <span class="w-10 h-10 rounded-lg bg-brand flex items-center justify-center shrink-0 transition-colors">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </span>
             <div>
-              <p class="text-sm font-semibold text-white">Industry-Best Lead Times</p>
-              <p class="text-xs text-white/50 mt-0.5">Others have no capacity. We do.</p>
+              <p class="text-sm font-semibold text-dark">Industry-Best Lead Times</p>
+              <p class="text-xs text-gray-500 mt-0.5">Others have no capacity. We do.</p>
             </div>
           </button>
-          <button data-card="1" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
-            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <button data-card="1" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-gray-200 hover:border-gray-300">
+            <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 transition-colors group-hover:bg-gray-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg>
             </span>
             <div>
-              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">White Glove Design Service</p>
-              <p class="text-xs text-white/35 mt-0.5">Don't know what you need? No problem.</p>
+              <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">White Glove Design Service</p>
+              <p class="text-xs text-gray-400 mt-0.5">Don't know what you need? No problem.</p>
             </div>
           </button>
-          <button data-card="2" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
-            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <button data-card="2" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-gray-200 hover:border-gray-300">
+            <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 transition-colors group-hover:bg-gray-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </span>
             <div>
-              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">Designed for Reliability</p>
-              <p class="text-xs text-white/35 mt-0.5">Reliable transformers, reliable supply chains, reliable delivery dates.</p>
+              <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Designed for Reliability</p>
+              <p class="text-xs text-gray-400 mt-0.5">Reliable transformers, reliable supply chains, reliable delivery dates.</p>
             </div>
           </button>
-          <button data-card="3" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-white/8 hover:border-white/20">
-            <span class="w-10 h-10 rounded-lg bg-white/8 flex items-center justify-center shrink-0 transition-colors group-hover:bg-white/12">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <button data-card="3" class="diff-btn group flex items-center gap-4 text-left p-4 rounded-xl border transition-all duration-300 border-gray-200 hover:border-gray-300">
+            <span class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0 transition-colors group-hover:bg-gray-200">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
             </span>
             <div>
-              <p class="text-sm font-semibold text-white/60 group-hover:text-white transition-colors">24/7 Transformer Support</p>
-              <p class="text-xs text-white/35 mt-0.5">We're always there when you need us.</p>
+              <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">24/7 Transformer Support</p>
+              <p class="text-xs text-gray-400 mt-0.5">We're always there when you need us.</p>
             </div>
           </button>
         </div>
@@ -353,34 +362,34 @@
 
       <!-- Right: card content -->
       <div class="reveal" style="animation-delay:0.15s">
-        <div id="diff-cards" class="relative min-h-[340px]">
-          <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500" style="background: rgba(255,255,255,0.04);">
+        <div id="diff-cards" class="relative min-h-[200px]">
+          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-100 p-8 transition-all duration-500" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-4">Industry-Best Lead Times</h3>
-            <p class="text-white/55 leading-[1.75] text-sm">Primary has manufacturing partnerships with some of the world's experienced and capable factories. Our factories have long histories in the US market and demonstrable track records exceeding IEEE requirements.</p>
+            <h3 class="text-xl font-bold text-dark mb-4">Industry-Best Lead Times</h3>
+            <p class="text-gray-500 leading-[1.75] text-sm">Primary has manufacturing partnerships with some of the world's experienced and capable factories. Our factories have long histories in the US market and demonstrable track records exceeding IEEE requirements.</p>
           </div>
           <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-4">White Glove Design Service</h3>
-            <p class="text-white/55 leading-[1.75] text-sm">Some of our customers are small teams and first-time buyers. We're happy to help customers develop and tweak their specifications with their project's requirements in mind. With specifications in hand, we custom design your unit(s) and quickly provide your fully delivered cost and lead time.</p>
+            <h3 class="text-xl font-bold text-dark mb-4">White Glove Design Service</h3>
+            <p class="text-gray-500 leading-[1.75] text-sm">Some of our customers are small teams and first-time buyers. We're happy to help customers develop and tweak their specifications with their project's requirements in mind. With specifications in hand, we custom design your unit(s) and quickly provide your fully delivered cost and lead time.</p>
           </div>
           <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-4">Designed for Reliability</h3>
-            <p class="text-white/55 leading-[1.75] text-sm">We design our transformers, optimize our supply chains, price our projects, and schedule our deliveries with predictability in mind.</p>
+            <h3 class="text-xl font-bold text-dark mb-4">Designed for Reliability</h3>
+            <p class="text-gray-500 leading-[1.75] text-sm">We design our transformers, optimize our supply chains, price our projects, and schedule our deliveries with predictability in mind.</p>
           </div>
           <div class="diff-card absolute inset-0 rounded-2xl border border-white/10 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: rgba(255,255,255,0.04);">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2000D3" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
             </div>
-            <h3 class="text-xl font-bold text-white mb-4">24/7 Transformer Support</h3>
-            <p class="text-white/55 leading-[1.75] text-sm">We are always available and eager to help, be that early in your procurement process or after the transformer is up and running.</p>
+            <h3 class="text-xl font-bold text-dark mb-4">24/7 Transformer Support</h3>
+            <p class="text-gray-500 leading-[1.75] text-sm">We are always available and eager to help, be that early in your procurement process or after the transformer is up and running.</p>
           </div>
         </div>
       </div>
@@ -462,8 +471,6 @@
         </div>
       </div>
 
-      <div class="mt-8">
-        </div>
       </div>
     </div>
   </div>
@@ -475,10 +482,10 @@
 <!-- ══════════════════════════════════════
      SUPPORT / LONG HAUL
 ══════════════════════════════════════ -->
-<section class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+<section id="services" class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
   <div class="max-w-screen-xl mx-auto">
-    <div class="grid lg:grid-cols-2 gap-16 items-center">
-      <div class="reveal" style="animation-delay:0.15s">
+    <div>
+      <div class="reveal max-w-2xl" style="animation-delay:0.15s">
         <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Lifecycle Services</p>
         <h2 class="text-[clamp(2rem,4vw,3rem)] font-extrabold text-dark leading-[1.1] tracking-tightest mb-6">Your Turn-Key<br>Transformer Partner</h2>
         <p class="text-gray-500 leading-[1.75] mb-6">Primary is ready to manage commissioning, maintenance and emergency response. We have a network of service teams that are one call away.</p>
@@ -487,9 +494,6 @@
           <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3.5 bg-brand text-white font-semibold text-sm rounded-lg hover:bg-brand-dark active:scale-95 transition-all duration-200 shadow-lg shadow-brand/20">
             Meet Our Engineers
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#" class="inline-flex items-center gap-2 px-6 py-3.5 border border-gray-200 text-dark font-semibold text-sm rounded-lg hover:bg-gray-50 active:scale-95 transition-all duration-200">
-            View Services
           </a>
         </div>
       </div>
@@ -557,7 +561,7 @@
 <!-- ══════════════════════════════════════
      MARKETS — TABS
 ══════════════════════════════════════ -->
-<section class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+<section id="markets" class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
   <div class="max-w-screen-xl mx-auto">
     <div class="reveal text-center mb-12">
       <p class="text-xs font-semibold tracking-[0.14em] uppercase text-brand mb-4">Industries</p>
@@ -750,9 +754,18 @@
     <div class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 pb-12 border-b border-white/6">
       <div class="col-span-2 md:col-span-1">
         <a href="/" class="flex items-center gap-2.5 mb-4">
-          <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
-            <rect width="30" height="30" rx="5" fill="#2000D3"/>
-            <path d="M6 15h4.5l2-7 4 14 2-9 2 4.5H24" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg width="27" height="33" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="rotate(-15, 8, 13)">
+              <rect x="6.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+              <rect x="4.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+              <rect x="5" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+            </g>
+            <g transform="rotate(15, 26, 13)">
+              <rect x="24.5" y="3" width="3" height="10" rx="1.5" fill="#2000D3"/>
+              <rect x="22.5" y="9" width="7" height="2.5" rx="1.25" fill="#2000D3"/>
+              <rect x="23" y="5.5" width="6" height="2" rx="1" fill="#2000D3"/>
+            </g>
+            <path fill="#2000D3" fill-rule="evenodd" d="M 4 44 L 4 15 A 2 2 0 0 1 6 13 L 30 13 A 2 2 0 0 1 32 15 L 32 31 A 2 2 0 0 1 30 33 L 9 33 L 9 44 Z M 9 18 L 25 18 A 2 2 0 0 1 27 20 L 27 26 A 2 2 0 0 1 25 28 L 9 28 Z"/>
           </svg>
           <span class="text-sm font-bold text-white tracking-tight">Primary Transformers</span>
         </a>
@@ -762,36 +775,33 @@
       <div>
         <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Products</p>
         <ul class="flex flex-col gap-2.5">
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Power Transformers</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Distribution Transformers</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Special Purpose</a></li>
+          <li><a href="#products" class="text-xs text-white/45 hover:text-white transition-colors">Power Transformers</a></li>
+          <li><a href="#products" class="text-xs text-white/45 hover:text-white transition-colors">Distribution Transformers</a></li>
+          <li><a href="#products" class="text-xs text-white/45 hover:text-white transition-colors">Special Purpose</a></li>
         </ul>
       </div>
       <div>
         <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Markets</p>
         <ul class="flex flex-col gap-2.5">
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Renewable Energy</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Data Centers</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Industrial</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Utilities</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Oil &amp; Gas</a></li>
+          <li><a href="#markets" class="text-xs text-white/45 hover:text-white transition-colors">Renewable Energy</a></li>
+          <li><a href="#markets" class="text-xs text-white/45 hover:text-white transition-colors">Data Centers</a></li>
+          <li><a href="#markets" class="text-xs text-white/45 hover:text-white transition-colors">Industrial</a></li>
+          <li><a href="#markets" class="text-xs text-white/45 hover:text-white transition-colors">Utilities</a></li>
+          <li><a href="#markets" class="text-xs text-white/45 hover:text-white transition-colors">Oil &amp; Gas</a></li>
         </ul>
       </div>
       <div>
         <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Services</p>
         <ul class="flex flex-col gap-2.5">
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Field Support</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Warranty Service</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Commissioning</a></li>
+          <li><a href="#services" class="text-xs text-white/45 hover:text-white transition-colors">Field Support</a></li>
+          <li><a href="#services" class="text-xs text-white/45 hover:text-white transition-colors">Warranty Service</a></li>
+          <li><a href="#services" class="text-xs text-white/45 hover:text-white transition-colors">Commissioning</a></li>
         </ul>
       </div>
       <div>
         <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Company</p>
         <ul class="flex flex-col gap-2.5">
           <li><a href="#contact" class="text-xs text-white/45 hover:text-white transition-colors">Contact Us</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">About Us</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Resources</a></li>
-          <li><a href="#" class="text-xs text-white/45 hover:text-white transition-colors">Careers</a></li>
         </ul>
       </div>
     </div>
@@ -858,12 +868,12 @@ let diffActive = 0;
 function setDiff(idx) {
   diffBtns.forEach((btn, i) => {
     const isActive = i === idx;
-    btn.style.borderColor = isActive ? '#2000D3' : 'rgba(255,255,255,0.08)';
-    btn.style.background = isActive ? 'rgba(32,0,211,0.1)' : 'transparent';
+    btn.style.borderColor = isActive ? '#2000D3' : 'rgba(0,0,0,0.08)';
+    btn.style.background = isActive ? 'rgba(32,0,211,0.08)' : 'transparent';
     const icon = btn.querySelector('span');
-    icon.style.background = isActive ? '#2000D3' : 'rgba(255,255,255,0.08)';
+    icon.style.background = isActive ? '#2000D3' : 'rgba(0,0,0,0.06)';
     const text = btn.querySelector('p');
-    if (text) text.style.color = isActive ? '#fff' : 'rgba(255,255,255,0.6)';
+    if (text) text.style.color = isActive ? '#0a0a0f' : '#9ca3af';
   });
   diffCards.forEach((card, i) => {
     card.style.opacity = i === idx ? '1' : '0';
