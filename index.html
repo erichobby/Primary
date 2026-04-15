@@ -101,6 +101,21 @@
     .testimonial-card { flex: 0 0 calc(50% - 12px); }
     @media (max-width: 768px) { .testimonial-card { flex: 0 0 calc(100% - 0px); } }
 
+
+    /* ── Animated underline ── */
+    .underline-draw {
+      display: inline;
+      background-image: linear-gradient(#e02926, #e02926);
+      background-repeat: no-repeat;
+      background-position: left bottom 8px;
+      background-size: 0% 3px;
+      animation: drawUnderline 0.6s cubic-bezier(0.4, 0, 0.2, 1) 1.1s forwards;
+    }
+    @keyframes drawUnderline {
+      from { background-size: 0% 3px; }
+      to   { background-size: 100% 3px; }
+    }
+
     /* ── Noise grain texture ── */
     .grain::after {
       content: '';
@@ -124,8 +139,7 @@
 
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2.5 shrink-0">
-      <img src="logo-primary.png" alt="Primary Transformers" style="height:44px;width:auto;" />
-      <span id="nav-logo-text" class="font-bold text-[15px] text-white tracking-tight transition-colors duration-300">Primary Transformers</span>
+      <img src="logo-primary.svg" alt="Primary Transformers" style="height:36px;width:auto;" />
     </a>
 
     <!-- Desktop links -->
@@ -224,7 +238,7 @@
   <!-- Background image -->
   <div class="absolute inset-0 z-0">
     <img src="hero-bg.png" alt="" class="w-full h-full object-cover" style="object-position: center 45%;" />
-    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,15,0.55) 0%, rgba(10,10,15,0.45) 35%, rgba(10,10,15,0.82) 75%, rgba(10,10,15,0.95) 100%);"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,15,0.55) 0%, rgba(10,10,15,0.45) 35%, rgba(10,10,15,0.5) 65%, rgba(255,255,255,0.35) 90%, rgba(255,255,255,0.55) 100%);"></div>
   </div>
 
   <!-- Blue orb -->
@@ -235,7 +249,7 @@
   <div class="relative z-10 max-w-screen-xl mx-auto w-full flex flex-col justify-center" style="padding-top: clamp(6rem,12vw,10rem); padding-bottom: clamp(4rem,7vw,6rem); min-height: 100svh;">
     <div class="max-w-2xl">
       <h1 class="reveal text-[clamp(2.6rem,5.5vw,4.8rem)] font-extrabold text-white leading-[1.08] tracking-tightest mb-6" style="animation-delay:0.1s">
-        Your <span style="text-decoration: underline; text-decoration-color: #e02926; text-underline-offset: 6px; text-decoration-thickness: 3px;">Primary</span> Source<br>for On-Time Transformers.
+        Your <span class="underline-draw">Primary</span> Source<br>for On-Time Transformers.
       </h1>
       <p class="reveal text-[clamp(1rem,1.4vw,1.1rem)] text-white/60 max-w-lg leading-[1.75] mb-10" style="animation-delay:0.2s">
         Primary designs and supplies transformers with world-best<br>lead times and guaranteed uncompromising quality.
@@ -260,7 +274,7 @@
 <!-- ══════════════════════════════════════
      LOGO MARQUEE
 ══════════════════════════════════════ -->
-<div class="bg-white border-y border-gray-100 py-5 overflow-hidden" style="padding-left: 0; padding-right: 0;">
+<div class="bg-white py-5 overflow-hidden" style="padding-left: 0; padding-right: 0; border-top: 1.5px solid #e02926; border-bottom: 1.5px solid #e02926;">
   <div class="marquee-track">
     <!-- Set 1 -->
     <div class="flex items-center gap-16 px-8">
@@ -589,19 +603,39 @@
         </button>
         <button data-tab="1" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Data Centers</p>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Data Centers</p>
+            <div class="tab-progress mt-1.5 rounded-full overflow-hidden">
+              <div class="tab-progress-bar rounded-full" style="background:#f4a81d;"></div>
+            </div>
+          </div>
         </button>
         <button data-tab="2" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" class="shrink-0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Utilities</p>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Utilities</p>
+            <div class="tab-progress mt-1.5 rounded-full overflow-hidden">
+              <div class="tab-progress-bar rounded-full" style="background:#f4a81d;"></div>
+            </div>
+          </div>
         </button>
         <button data-tab="3" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v12c0 1.38 3.13 2.5 7 2.5s7-1.12 7-2.5V6"/><path d="M5 12c0 1.38 3.13 2.5 7 2.5s7-1.12 7-2.5"/></svg>
-          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Oil &amp; Gas</p>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Oil &amp; Gas</p>
+            <div class="tab-progress mt-1.5 rounded-full overflow-hidden">
+              <div class="tab-progress-bar rounded-full" style="background:#f4a81d;"></div>
+            </div>
+          </div>
         </button>
         <button data-tab="4" class="market-tab group flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all duration-300 border-gray-100 hover:border-gray-200 w-full">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><rect x="7" y="9" width="6" height="13" rx="1"/><line x1="10" y1="9" x2="10" y2="22"/><path d="M9 5 Q9 3 10 2 Q11 3 10 5" /><path d="M11.5 4 Q11.5 2 12.5 1 Q13.5 2 12.5 4" /><line x1="7" y1="22" x2="20" y2="22"/></svg>
-          <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Industrial</p>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-400 group-hover:text-dark transition-colors">Industrial</p>
+            <div class="tab-progress mt-1.5 rounded-full overflow-hidden">
+              <div class="tab-progress-bar rounded-full" style="background:#f4a81d;"></div>
+            </div>
+          </div>
         </button>
       </div>
 
@@ -767,8 +801,7 @@
     <div class="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-10 pb-12 border-b border-white/6">
       <div class="col-span-2 md:col-span-1">
         <a href="/" class="flex items-center gap-2.5 mb-4">
-          <img src="logo-primary.png" alt="Primary Transformers" style="height:33px;width:auto;" />
-          <span class="text-sm font-bold text-white tracking-tight">Primary Transformers</span>
+          <img src="logo-primary.svg" alt="Primary Transformers" style="height:28px;width:auto;background:#fff;padding:6px 10px;border-radius:6px;" />
         </a>
         <p class="text-xs text-white/30 leading-relaxed max-w-[22ch]">Your Primary source for on-time transformers.</p>
         <p class="text-xs text-white/30 mt-4">contact@primarytransformers.com</p>
@@ -829,13 +862,13 @@ function updateNav() {
     nav.style.background = 'rgba(255,255,255,0.97)';
     nav.style.borderBottom = '1px solid #ebebeb';
     nav.style.backdropFilter = 'blur(12px)';
-    navLogoText.style.color = '#0a0a0f';
+    if (navLogoText) navLogoText.style.color = '#0a0a0f';
     navLinks.forEach(l => l.style.color = '#333');
   } else {
     nav.style.background = 'transparent';
     nav.style.borderBottom = 'none';
     nav.style.backdropFilter = 'none';
-    navLogoText.style.color = '#fff';
+    if (navLogoText) navLogoText.style.color = '#fff';
     navLinks.forEach(l => l.style.color = 'rgba(255,255,255,0.8)');
   }
 }
