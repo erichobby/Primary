@@ -187,6 +187,7 @@
           </div>
         </div>
       </li>
+      <li><a href="#what-we-do" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">What We Do</a></li>
       <li><a href="#why-primary" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">Why Primary?</a></li>
       <li><a href="#services" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors">Services</a></li>
     </ul>
@@ -209,6 +210,7 @@
 <!-- Mobile menu -->
 <div id="mobile-menu" class="fixed inset-0 z-40 bg-dark flex-col pt-24 px-6 gap-4 hidden">
   <a href="#" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Home</a>
+  <a href="#what-we-do" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">What We Do</a>
   <a href="#products" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Products</a>
   <a href="#markets" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Markets</a>
   <a href="#services" onclick="document.getElementById('mobile-menu').style.display='none';menuOpen=false;" class="text-2xl font-bold text-white border-b border-white/10 pb-4">Services</a>
@@ -226,7 +228,7 @@
     <video autoplay muted loop playsinline class="w-full h-full object-cover" style="object-position: center 45%;">
       <source src="websitevideo.mp4" type="video/mp4" />
     </video>
-    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,15,0.55) 0%, rgba(10,10,15,0.45) 35%, rgba(10,10,15,0.5) 65%, rgba(255,255,255,0.35) 90%, rgba(255,255,255,0.55) 100%);"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(10,10,15,0.35) 0%, rgba(10,10,15,0.28) 35%, rgba(10,10,15,0.32) 65%, rgba(255,255,255,0.35) 90%, rgba(255,255,255,0.55) 100%);"></div>
   </div>
 
   <!-- Blue orb -->
@@ -237,7 +239,7 @@
   <div class="relative z-10 max-w-screen-xl mx-auto w-full flex flex-col justify-center" style="padding-top: clamp(6rem,12vw,10rem); padding-bottom: clamp(4rem,7vw,6rem); min-height: 100svh;">
     <div class="max-w-2xl">
       <h1 class="reveal text-[clamp(2.6rem,5.5vw,4.8rem)] font-extrabold text-white leading-[1.08] tracking-tightest mb-6" style="animation-delay:0.1s">
-        Your <span class="underline-draw">Primary</span> Source<br>for On-Time Transformers.
+        Your <span class="underline-draw">Primary</span> Source for On-Time Transformers.
       </h1>
       <p class="reveal text-[clamp(1rem,1.4vw,1.1rem)] text-white/60 max-w-lg leading-[1.75] mb-10" style="animation-delay:0.2s">
         Primary designs and supplies transformers with world-best<br>lead times and guaranteed uncompromising quality.
@@ -297,6 +299,18 @@
   </div>
 </div>
 
+
+<!-- ══════════════════════════════════════
+     WHAT WE DO
+══════════════════════════════════════ -->
+<section id="what-we-do" class="bg-white" style="padding: clamp(4rem,7vw,7rem) clamp(1rem,4vw,3rem);">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-3xl">
+      <p class="text-xs font-bold tracking-[0.14em] uppercase text-brand mb-4">What We Do</p>
+      <p class="text-[clamp(1rem,1.3vw,1.15rem)] text-gray-600 leading-[1.85]">When all others fail, we don't. Primary engineers, designs, and builds top-quality large and medium power transformers, distribution transformers, and specialty transformers for demanding customers across the US. We are your turn-key solution for all of your transformer needs, managing logistics, install, testing, warranties, and service. Fast quotes, spec assistance, transparent progress monitoring...Primary has you covered.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ══════════════════════════════════════
      THE PRIMARY DIFFERENCE
@@ -364,36 +378,36 @@
 
       <!-- Right: card content -->
       <div class="reveal" style="animation-delay:0.15s">
-        <div id="diff-cards" class="relative min-h-[200px]">
-          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500" style="background: #fff;">
+        <div id="diff-cards" class="relative" style="transition: height 0.5s ease;">
+          <div class="diff-card absolute top-0 left-0 right-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222d65" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <h3 class="text-xl font-bold text-dark mb-4">Industry-Best Lead Times</h3>
             <p class="text-gray-500 leading-[1.75] text-sm">Primary has manufacturing partnerships with some of the world's experienced and capable factories. Our factories have long histories in the US market and demonstrable track records exceeding IEEE requirements. We've vetted every factory on earth and formed partnerships with the top six facilities.</p>
           </div>
-          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
+          <div class="diff-card absolute top-0 left-0 right-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222d65" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2 2 2 0 00-2 2"/><path d="M14 10V4a2 2 0 00-2-2 2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2 2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg>
             </div>
             <h3 class="text-xl font-bold text-dark mb-4">White Glove Design Service</h3>
             <p class="text-gray-500 leading-[1.75] text-sm">Some of our customers are small teams and first-time buyers. We're happy to help customers develop and tweak their specifications with their project's requirements in mind. With specifications in hand, we custom design your unit(s) and quickly provide your fully delivered cost and lead time.</p>
           </div>
-          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
+          <div class="diff-card absolute top-0 left-0 right-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222d65" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
             <h3 class="text-xl font-bold text-dark mb-4">Track Your Order in Real Time</h3>
             <p class="text-gray-500 leading-[1.75] text-sm">We provide our customers 24/7 visibility into the status of their order. Watch your transformer move through design, manufacturing, testing, and shipping.</p>
           </div>
-          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
+          <div class="diff-card absolute top-0 left-0 right-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222d65" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <h3 class="text-xl font-bold text-dark mb-4">Designed for Reliability</h3>
             <p class="text-gray-500 leading-[1.75] text-sm">We design our transformers, optimize our supply chains, price our projects, and schedule our deliveries with predictability in mind.</p>
           </div>
-          <div class="diff-card absolute inset-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
+          <div class="diff-card absolute top-0 left-0 right-0 rounded-2xl border border-gray-300 p-8 transition-all duration-500 opacity-0 pointer-events-none" style="background: #fff;">
             <div class="w-14 h-14 rounded-xl bg-brand/15 flex items-center justify-center mb-6">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222d65" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.82 19.79 19.79 0 01.5 4.18 2 2 0 012.45 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.18 6.18l1.27-.79a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
             </div>
@@ -823,6 +837,7 @@
       <div>
         <p class="text-[10px] font-bold tracking-[0.12em] uppercase text-white/25 mb-4">Company</p>
         <ul class="flex flex-col gap-2.5">
+          <li><a href="#what-we-do" class="text-xs text-white/45 hover:text-white transition-colors">What We Do</a></li>
           <li><a href="#contact" class="text-xs text-white/45 hover:text-white transition-colors">Contact Us</a></li>
           <li><a href="transformer-builder.html" class="text-xs text-white/45 hover:text-white transition-colors">Build Your Transformer</a></li>
         </ul>
@@ -900,15 +915,18 @@ function setDiff(idx) {
     const text = btn.querySelector('p');
     if (text) text.style.color = isActive ? '#0a0a0f' : '#9ca3af';
   });
+  const container = document.getElementById('diff-cards');
   diffCards.forEach((card, i) => {
     card.style.opacity = i === idx ? '1' : '0';
     card.style.pointerEvents = i === idx ? 'auto' : 'none';
   });
+  container.style.height = diffCards[idx].scrollHeight + 'px';
   diffActive = idx;
 }
 
 diffBtns.forEach((btn, i) => btn.addEventListener('click', () => setDiff(i)));
 setInterval(() => setDiff((diffActive + 1) % 5), 4000);
+setDiff(0);
 
 
 
