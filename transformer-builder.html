@@ -176,15 +176,7 @@
             <option>Special Purpose</option>
           </select>
           <label class="field-label mt-1">Approximate MVA Rating</label>
-          <select class="field-input field-select" data-spec="hl-mva" onchange="updateSpec(this,'hl-mva')">
-            <option value="">Select range…</option>
-            <option>&lt; 1 MVA</option>
-            <option>1 – 5 MVA</option>
-            <option>5 – 20 MVA</option>
-            <option>20 – 100 MVA</option>
-            <option>100 – 300 MVA</option>
-            <option>&gt; 300 MVA</option>
-          </select>
+          <input class="field-input" type="number" min="0" step="any" placeholder="e.g. 50" data-spec="hl-mva" oninput="updateSpec(this,'hl-mva')" />
         </div>
       </div>
 
