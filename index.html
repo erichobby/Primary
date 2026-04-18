@@ -997,10 +997,12 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
   btn.textContent = 'Sending…';
   btn.disabled = true;
   try {
-    const res = await fetch('https://formspree.io/f/mqewaben', {
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData.entries());
+    const res = await fetch('https://hook.us2.make.com/kqdhphlsx9logf98f2v9exwc8cei2yo4', {
       method: 'POST',
-      body: new FormData(e.target),
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     });
     if (res.ok) {
       btn.textContent = 'Message Sent!';
