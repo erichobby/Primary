@@ -255,6 +255,31 @@
             <div><label class="field-label">Email</label><input class="field-input" type="email" placeholder="jane@example.com" data-spec="email" oninput="updateSpec(this,'email');checkSection(0,[1,2,3,4,5,6])" /></div>
             <div><label class="field-label">Phone</label><input class="field-input" type="tel" placeholder="+1 555 000 0000" data-spec="phone" oninput="updateSpec(this,'phone');checkSection(0,[1,2,3,4,5,6])" /></div>
           </div>
+          <div>
+            <label class="field-label">Market / Application</label>
+            <select class="field-input field-select" data-spec="market" onchange="updateSpec(this,'market');checkSection(0,[1,2,3,4,5,6])">
+              <option value="">Select…</option>
+              <option>Renewables</option>
+              <option>Data Centers</option>
+              <option>Utilities</option>
+              <option>Oil &amp; Gas</option>
+              <option>Industrial</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Transformer Type</label>
+            <select class="field-input field-select" data-spec="transformer-type" onchange="updateSpec(this,'transformer-type');checkSection(0,[1,2,3,4,5,6])">
+              <option value="">Select…</option>
+              <option>Power Transformer</option>
+              <option>Distribution Transformer</option>
+              <option>Special Purpose</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="field-label">Quantity</label><input class="field-input" type="number" min="1" placeholder="1" data-spec="quantity" oninput="updateSpec(this,'quantity');checkSection(0,[1,2,3,4,5,6])" /></div>
+            <div><label class="field-label">Required Delivery Date</label><input class="field-input" type="date" data-spec="delivery-date" oninput="updateSpec(this,'delivery-date');checkSection(0,[1,2,3,4,5,6])" /></div>
+          </div>
         </div>
       </div>
 
